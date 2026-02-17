@@ -1,3 +1,45 @@
 <resources>
     <string name="app_name">MarkWorkingDaysApp</string>
+
+    <string name="default_current_date">17. July 07</string>
+    <string name="default_item_day_date">01.01</string>
+    <string name="default_bonus_item_day">+100</string>
+    <string name="default_current_year">2026</string>
+
+
+
+    <string name="text_daily_rate">Daily rate: %1$d %2$s</string>
+
+    <string name="text_edit_days">Edit</string>
+    <string name="text_copy_days">Copy</string>
+
+    <string name="text_question_worked_today">Worked today?</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
+
+    <string name="text_working_days">%1$d working days</string>
+    <string name="text_total_bonuses">Total bonuses: %1$d</string>
+    <string name="text_total_earned">Total earned: %1$d</string>
+
+
+
+
+    <string name="text_settings">Settings</string>
+
+    <string name="settings_question_daily_rate">Daily rate:</string>
+    <string name="settings_question_first_weekday">First day of week:</string>
+    <string name="settings_choose_monday">Monday</string>
+    <string name="settings_choose_sunday">Sunday</string>
+    <string name="settings_question_currency">Currency:</string>
+
+
+    <string name="dialog_question_worked">Worked?</string>
+    <string name="dialog_text_bonus">Bonus</string>
+    <string name="dialog_text_note">Note</string>
+
+
+
+    <string name="description_btn_settings">Settings button</string>
+    <string name="description_icon_note">Note icon</string>
+
 </resources>

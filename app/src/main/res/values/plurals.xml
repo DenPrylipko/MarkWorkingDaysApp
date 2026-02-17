@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="working_days">
+        <item quantity="one">%d working day</item>
+        <item quantity="other">%d working days</item>
+    </plurals>
+
+</resources>
