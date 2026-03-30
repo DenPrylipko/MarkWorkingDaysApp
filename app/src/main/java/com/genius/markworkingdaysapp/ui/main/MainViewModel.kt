@@ -4,30 +4,26 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.genius.markworkingdaysapp.data.db.DatabaseProvider
-import com.genius.markworkingdaysapp.data.repository.WorkDayRepository
-import com.genius.markworkingdaysapp.data.settings.AppSettings
-import com.genius.markworkingdaysapp.core.data.buildMonthGridBase
-import com.genius.markworkingdaysapp.core.data.buildWeekdays
-import com.genius.markworkingdaysapp.data.db.entity.WorkDayEntity
-import com.genius.markworkingdaysapp.ui.main.model.DayCell
-import com.genius.markworkingdaysapp.ui.main.model.MainUiState
-import com.genius.markworkingdaysapp.ui.main.model.MonthGridBase
-import com.genius.markworkingdaysapp.ui.main.model.MonthStats
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
+import com.genius.markworkingdaysapp.data.db.WorkDayRepository
+import com.genius.markworkingdaysapp.data.AppSettings
+import com.genius.markworkingdaysapp.buildMonthGridBase
+import com.genius.markworkingdaysapp.buildWeekdays
+import com.genius.markworkingdaysapp.ui.main.models.DayCell
+import com.genius.markworkingdaysapp.ui.main.models.DayType
+import com.genius.markworkingdaysapp.ui.main.models.MainConfig
+import com.genius.markworkingdaysapp.ui.main.models.MainUiState
+import com.genius.markworkingdaysapp.ui.main.models.MonthStats
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.Month
+import java.time.YearMonth
 
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
@@ -40,10 +36,27 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private val shownDate = MutableStateFlow(LocalDate.now())
-
     private val firstDowFlow = MutableStateFlow(getFirstDOW())
     private val dailyRateFlow = MutableStateFlow(settings.dailyRate)
     private val currencyFlow = MutableStateFlow(settings.currency)
+    private val currentMonthFlow = MutableStateFlow(YearMonth.now())
+
+    private val mainConfigFlow =
+        combine(
+            shownDate,
+            firstDowFlow,
+            currentMonthFlow,
+            dailyRateFlow,
+            currencyFlow,
+        ) { now, firstDOW, currentMonth, dailyRate, currency ->
+            MainConfig(
+                now = now,
+                firstDOW = firstDOW,
+                currentMonth = currentMonth,
+                dailyRate = dailyRate,
+                currency = currency,
+                )
+        }
 
     private fun getFirstDOW(): DayOfWeek = when (settings.firstDayOfWeek) {
         AppSettings.FirstDayOfWeek.MONDAY -> DayOfWeek.MONDAY
@@ -51,65 +64,89 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     val uiState: StateFlow<MainUiState> =
-        combine(
-            shownDate, firstDowFlow, dailyRateFlow, currencyFlow,
-        ) { now, firstDOW, dailyRate, currency ->
-            Triple(now, firstDOW, dailyRate)
-        }
-            .flatMapLatest { (now, firstDOW, dailyRate) ->
-                val base: MonthGridBase = buildMonthGridBase(now.year, now.monthValue, firstDOW)
-                val weekdays = buildWeekdays(firstDOW)
-                val currency = currencyFlow.value
+        mainConfigFlow
+            .flatMapLatest { config ->
+                val weekdays = buildWeekdays(config.firstDOW)
+                val monthGridBase = buildMonthGridBase(
+                    year = config.now.year,
+                    month = config.currentMonth.month.value,
+                    firstDayOfWeek = config.firstDOW
+                )
 
-                repo.observeRange(base.start, base.end)
+                repo.observeRange(monthGridBase.start, monthGridBase.end)
                     .map { dbMap ->
-                        val monthDays: List<DayCell> = base.cells.map { baseCell ->
+                        val daysList: List<DayCell> = monthGridBase.cells.map { baseCell ->
                             val e = dbMap[baseCell.date.toEpochDay()]
                             baseCell.copy(
-                                worked = e?.worked ?: false,
-                                bonus = e?.bonus ?: 0,
+                                hasEntry = e != null,
+                                isInCurrentMonth = baseCell.date.monthValue == config.currentMonth.monthValue,
+                                dayType = when {
+                                    e == null -> null
+                                    e.shortDayEarned != null -> DayType.SHORT
+                                    e.worked -> DayType.FULL
+                                    else -> DayType.NOT_WORKED
+                                },
+                                bonus = e?.bonus,
+                                earned = when {
+                                    e == null -> null
+                                    e.shortDayEarned != null -> e.shortDayEarned
+                                    e.worked -> config.dailyRate + (e.bonus ?: 0)
+                                    else -> 0
+                                },
                                 note = e?.note,
-                                hasEntry = e != null
-                            )
+                                )
                         }
 
+                        val todayChecked = daysList.find { it.date == config.now }?.hasEntry ?: false
 
-                        val todayChecked = monthDays.find { it.date == now }?.hasEntry ?: false
+                        val currentMonthDays = daysList.filter { it.isInCurrentMonth }
 
-                        val workingDays = monthDays.count { it.worked }
-                        val totalBonuses = monthDays.sumOf { it.bonus ?: 0 }
-                        val totalEarned = workingDays * dailyRate + totalBonuses
+                        val workingDays = currentMonthDays.count { it.dayType == DayType.FULL || it.dayType == DayType.SHORT }
+                        val totalBonuses = currentMonthDays.sumOf { it.bonus ?: 0 }
+
+                        val fullDaysEarned = currentMonthDays.count { it.dayType == DayType.FULL } * config.dailyRate
+
+                        val shortDayEarned = currentMonthDays.sumOf {
+                            if (it.dayType == DayType.SHORT) it.earned ?: 0 else 0
+                        }
+
+                        val totalEarned = fullDaysEarned + shortDayEarned + totalBonuses
 
                         MainUiState(
-                            now = now,
-                            firstDayOfWeek = firstDOW,
-                            monthDaysData = monthDays,
+                            now = config.now,
+                            firstDayOfWeek = config.firstDOW,
+                            monthDaysData = daysList,
                             weekdaysData = weekdays,
-                            dailyRate = dailyRate,
-                            currency = currency,
+                            dailyRate = config.dailyRate,
+                            currency = config.currency,
                             todayCheckedStatus = todayChecked,
-                            monthStats = MonthStats(workingDays, totalBonuses, totalEarned)
+                            monthStats = MonthStats(workingDays, totalBonuses, totalEarned),
+                            currentMonth = config.currentMonth
                         )
                     }
             }
             .stateIn(
                 viewModelScope,
                 SharingStarted.WhileSubscribed(5000),
-                MainUiState(
-                    now = LocalDate.now(),
-                    firstDayOfWeek = firstDowFlow.value,
-                    monthDaysData = emptyList(),
-                    weekdaysData = buildWeekdays(firstDowFlow.value),
-                    dailyRate = dailyRateFlow.value,
-                    currency = currencyFlow.value,
-                    todayCheckedStatus = false,
-                    monthStats = MonthStats(0, 0, 0)
-                )
+                initialMainUiState()
             )
 
-    fun onSaveDay(date: LocalDate, worked: Boolean, bonus: Int?, note: String?) {
+    fun initialMainUiState() = MainUiState(
+        now = LocalDate.now(),
+        firstDayOfWeek = firstDowFlow.value,
+        monthDaysData = emptyList(),
+        weekdaysData = buildWeekdays(firstDowFlow.value),
+        dailyRate = dailyRateFlow.value,
+        currency = currencyFlow.value,
+        todayCheckedStatus = false,
+        monthStats = MonthStats(0, 0, 0),
+        currentMonth = currentMonthFlow.value
+    )
+
+
+    fun onSaveDay(date: LocalDate, dayType: DayType, bonus: Int?, shortDayEarned: Int?, note: String?) {
         viewModelScope.launch {
-            repo.saveDay(date, worked, bonus, note)
+            repo.saveDay(date, dayType, bonus, shortDayEarned, note)
         }
     }
 
@@ -128,7 +165,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         currencyFlow.value = value
     }
 
-    fun refreshMonth() {
-        shownDate.value = LocalDate.now()
+    fun setCurrentMonth(value: YearMonth) {
+        currentMonthFlow.value = value
     }
 }

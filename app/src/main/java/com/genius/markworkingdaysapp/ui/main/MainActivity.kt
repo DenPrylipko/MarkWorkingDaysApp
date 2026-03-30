@@ -1,5 +1,8 @@
 package com.genius.markworkingdaysapp.ui.main
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -12,32 +15,39 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import com.genius.markworkingdaysapp.R
-import com.genius.markworkingdaysapp.core.data.buildMonthGridBase
-import com.genius.markworkingdaysapp.core.data.getMonthTitle
-import com.genius.markworkingdaysapp.data.settings.AppSettings
+import com.genius.markworkingdaysapp.buildMonthItemsForYear
+import com.genius.markworkingdaysapp.getMonthTitle
+import com.genius.markworkingdaysapp.data.AppSettings
 import com.genius.markworkingdaysapp.databinding.ActivityMainBinding
-import com.genius.markworkingdaysapp.ui.main.adapter.MonthGridAdapter
 import com.genius.markworkingdaysapp.ui.adapter.WeekdaysAdapter
 import com.genius.markworkingdaysapp.ui.common.GridSpacingItemDecoration
 import com.genius.markworkingdaysapp.ui.common.NoScrollGridLayoutManager
-import com.genius.markworkingdaysapp.ui.main.model.MainUiState
+import com.genius.markworkingdaysapp.ui.main.adapters.MonthGridAdapter
+import com.genius.markworkingdaysapp.ui.main.adapters.MonthsAdapter
+import com.genius.markworkingdaysapp.ui.main.models.DayType
+import com.genius.markworkingdaysapp.ui.main.models.MainUiState
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
-import java.time.LocalDate
-import kotlin.collections.emptyList
+import java.time.format.DateTimeFormatter
 
 private const val DAYS_IN_WEEK = 7
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
+    private lateinit var backCallback: OnBackPressedCallback
     private val viewModel: MainViewModel by viewModels()
-
-    private lateinit var monthAdapter: MonthGridAdapter
+    private lateinit var monthDaysAdapter: MonthGridAdapter
     private lateinit var weekdaysAdapter: WeekdaysAdapter
+    private lateinit var monthsAdapter: MonthsAdapter
+    private var currentState: MainUiState? = null
+    var uiSettingsInitialized = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,26 +57,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         applyInsets()
-
         setupRecyclerViews()
 
         lifecycleScope.launch {
-            viewModel.uiState.collect { state ->
-                render(state)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    render(state)
+                }
             }
         }
-
-        binding.tvCurrentDate.text = getMonthTitle(viewModel.uiState.value.now)
-
-        binding.etDailyRate.setText(viewModel.uiState.value.dailyRate.toString())
-
-        binding.etCurrency.setText(viewModel.uiState.value.currency)
 
         binding.etDailyRate.doAfterTextChanged { editable ->
             val value = editable?.toString()?.toIntOrNull() ?: 0
             viewModel.setDailyRate(value)
         }
-
+        binding.etCurrency.doAfterTextChanged { editable ->
+            val value = editable?.toString() ?: ""
+            viewModel.setCurrency(value)
+        }
         binding.rgChooseFirstDayOfWeek.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.rbMonday -> viewModel.setFirstDayOfWeek(AppSettings.FirstDayOfWeek.MONDAY)
@@ -74,20 +82,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.etCurrency.doAfterTextChanged { editable ->
-            val value = editable?.toString() ?: ""
-            viewModel.setCurrency(value)
+
+        binding.tvCurrentDate.setOnClickListener {
+            binding.layoutMonthChoose.isVisible = true
+            binding.touchBlocker.isVisible = true
         }
-
-        binding.drawerLayout.addDrawerListener(object : androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener() {
-            override fun onDrawerOpened(drawerView: View) {
-                binding.touchBlocker.visibility = View.VISIBLE
-            }
-            override fun onDrawerClosed(drawerView: View) {
-                binding.touchBlocker.visibility = View.GONE
-            }
-        })
-
         binding.imgBtnSettings.setOnClickListener {
             if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -95,46 +94,146 @@ class MainActivity : AppCompatActivity() {
                 binding.drawerLayout.openDrawer(GravityCompat.START)
             }
         }
-
-        binding.btnYes.setOnClickListener {
-            DayDialogFragment(
-                    viewModel.uiState.value.monthDaysData.find { it.date == LocalDate.now()}!!,
-                true
-                ) { date, worked, bonus, note ->
-                    viewModel.onSaveDay(date, worked, bonus, note)
-                }.show(supportFragmentManager, "DayDialog")
+        binding.imgBtnCopy.setOnClickListener {
+            copyData(currentState)
         }
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    binding.drawerLayout.closeDrawer(GravityCompat.START)
-                } else {
-                    isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
-                    isEnabled = true
-                }
+        binding.drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
+            override fun onDrawerOpened(drawerView: View) {
+                binding.touchBlocker.visibility = View.VISIBLE
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                binding.touchBlocker.visibility = View.GONE
             }
         })
 
+        backCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+                when {
+                    binding.drawerLayout.isDrawerOpen(GravityCompat.START) -> {
+                        binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    }
+
+                    binding.layoutMonthChoose.isVisible -> {
+                        binding.layoutMonthChoose.isGone = true
+                        binding.touchBlocker.isGone = true
+                    }
+
+                    else -> {
+                        isEnabled = false
+                        onBackPressedDispatcher.onBackPressed()
+                        isEnabled = true
+                    }
+                }
+            }
+        }
+
+        onBackPressedDispatcher.addCallback(this@MainActivity, backCallback)
+    }
+
+    private fun copyData(state: MainUiState?) = with(binding) {
+        val formatter = DateTimeFormatter.ofPattern("dd.MM")
+        if (state == null) return@with
+        val daysList = state.monthDaysData
+
+        val text =
+            daysList.filter { day -> day.isInCurrentMonth && day.dayType == DayType.FULL || day.dayType == DayType.SHORT }
+                .joinToString("\n") { day ->
+                    "${day.date.format(formatter)} " +
+                            when (day.dayType) {
+                                DayType.FULL if day.bonus != null && day.bonus != 0 -> {
+                                    "+ ${day.bonus} ${state.currency}"
+                                }
+
+                                DayType.SHORT -> {
+                                    "${day.earned} ${state.currency}"
+                                }
+
+                                else -> {
+                                    ""
+                                }
+                            }
+                }
+
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("work_days", text)
+
+        clipboard.setPrimaryClip(clip)
+    }
+
+    private fun render(state: MainUiState) = with(binding) {
+
+        currentState = state
+
+        if (!uiSettingsInitialized) {
+            etDailyRate.setText(state.dailyRate.toString())
+            etCurrency.setText(state.currency)
+
+            uiSettingsInitialized = true
+        }
+
+        tvCurrentDate.text = getMonthTitle(state.currentMonth)
+        tvDailyRate.text = getString(
+            R.string.text_daily_rate,
+            state.dailyRate,
+            state.currency
+        )
+        tvWorkingDays.text = resources.getQuantityString(
+            R.plurals.working_days,
+            state.monthStats.workingDays,
+            state.monthStats.workingDays
+        )
+        tvTotalBonuses.text = getString(
+            R.string.text_total_bonuses,
+            state.monthStats.totalBonuses,
+            state.currency
+        )
+        tvTotalEarned.text = getString(
+            R.string.text_total_earned,
+            state.monthStats.totalEarned,
+            state.currency
+        )
+
+        if (state.firstDayOfWeek == DayOfWeek.SUNDAY)
+            rbSunday.isChecked = true
+        else
+            rbMonday.isChecked = true
+
+        monthDaysAdapter.updateItems(state.monthDaysData)
+        weekdaysAdapter.updateItems(state.weekdaysData)
     }
 
     private fun setupRecyclerViews() = with(binding) {
         rvMonthDays.layoutManager = NoScrollGridLayoutManager(this@MainActivity, DAYS_IN_WEEK)
         rvWeekdays.layoutManager = NoScrollGridLayoutManager(this@MainActivity, DAYS_IN_WEEK)
+        rvMonths.layoutManager = GridLayoutManager(this@MainActivity, 1)
 
-        monthAdapter = MonthGridAdapter(emptyList()) { dayCell ->
-            val currentDay = viewModel.uiState.value.monthDaysData.find { it.date == dayCell.date } ?: dayCell
-            DayDialogFragment(
-                currentDay
-            ) { date, worked, bonus, note ->
-                viewModel.onSaveDay(date, worked, bonus, note)
+        monthDaysAdapter = MonthGridAdapter(emptyList()) { dayCell ->
+            val currentDay =
+                viewModel.uiState.value.monthDaysData.find { it.date == dayCell.date } ?: dayCell
+
+            DayDialogFragment(currentDay) { data ->
+                viewModel.onSaveDay(
+                    data.date,
+                    data.dayType,
+                    data.bonus,
+                    data.shortDayEarned,
+                    data.note
+                )
             }.show(supportFragmentManager, "DayDialog")
         }
         weekdaysAdapter = WeekdaysAdapter(emptyList())
+        monthsAdapter = MonthsAdapter(buildMonthItemsForYear(2026)) { month ->
+            viewModel.setCurrentMonth(month.yearMonth)
+            layoutMonthChoose.isGone = true
+            touchBlocker.isGone = true
+        }
 
-        rvMonthDays.adapter = monthAdapter
+        rvMonthDays.adapter = monthDaysAdapter
         rvWeekdays.adapter = weekdaysAdapter
+        rvMonths.adapter = monthsAdapter
 
         rvMonthDays.addItemDecoration(
             GridSpacingItemDecoration(
@@ -146,32 +245,12 @@ class MainActivity : AppCompatActivity() {
                 DAYS_IN_WEEK, 10, false
             )
         )
-    }
-
-    private fun render(state: MainUiState) = with(binding) {
-        tvDailyRate.text = getString(R.string.text_daily_rate,state.dailyRate, state.currency)
-
-        tvWorkingDays.text =
-            resources.getQuantityString(
-                R.plurals.working_days,
-                state.monthStats.workingDays,
-                state.monthStats.workingDays
+        rvMonths.addItemDecoration(
+            GridSpacingItemDecoration(
+                1, 10, false
             )
-        tvTotalBonuses.text = getString(R.string.text_total_bonuses, state.monthStats.totalBonuses)
-        tvTotalEarned.text = getString(R.string.text_total_earned, state.monthStats.totalEarned)
-
-        layoutIfWorked.isGone = state.todayCheckedStatus
-
-        if (state.firstDayOfWeek == DayOfWeek.SUNDAY) {
-            rbSunday.isChecked = true
-        } else {
-            rbMonday.isChecked = true
-        }
-
-        monthAdapter.updateItems(state.monthDaysData)
-        weekdaysAdapter.updateItems(state.weekdaysData)
+        )
     }
-
 
     private fun applyInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.layoutMain) { v, insets ->
@@ -186,6 +265,5 @@ class MainActivity : AppCompatActivity() {
             insets
         }
     }
-
 
 }

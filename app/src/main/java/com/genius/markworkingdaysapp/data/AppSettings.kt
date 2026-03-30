@@ -1,4 +1,4 @@
-package com.genius.markworkingdaysapp.data.settings
+package com.genius.markworkingdaysapp.data
 
 import android.content.Context
 import androidx.core.content.edit

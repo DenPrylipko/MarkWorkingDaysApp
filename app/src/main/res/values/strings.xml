@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name">MarkWorkingDaysApp</string>
 
+    <!-- defaults -->
     <string name="default_current_date">17. July 07</string>
     <string name="default_item_day_date">01.01</string>
     <string name="default_bonus_item_day">+100</string>
     <string name="default_current_year">2026</string>
 
 
-
+    <!-- main screen -->
     <string name="text_daily_rate">Daily rate: %1$d %2$s</string>
 
     <string name="text_edit_days">Edit</string>
@@ -18,12 +19,11 @@
     <string name="text_no">No</string>
 
     <string name="text_working_days">%1$d working days</string>
-    <string name="text_total_bonuses">Total bonuses: %1$d</string>
-    <string name="text_total_earned">Total earned: %1$d</string>
+    <string name="text_total_bonuses">Total bonuses: %1$d %2$s</string>
+    <string name="text_total_earned">Total earned: %1$d %2$s</string>
 
 
-
-
+    <!-- settings -->
     <string name="text_settings">Settings</string>
 
     <string name="settings_question_daily_rate">Daily rate:</string>
@@ -33,13 +33,29 @@
     <string name="settings_question_currency">Currency:</string>
 
 
-    <string name="dialog_question_worked">Worked?</string>
-    <string name="dialog_text_bonus">Bonus</string>
-    <string name="dialog_text_note">Note</string>
+    <!-- dialog edit day cell -->
+    <string name="dialog_today">Today</string>
+
+    <string name="dialog_full_day">Full day</string>
+    <string name="dialog_short_day">Short day</string>
+    <string name="dialog_not_worked">Not worked</string>
+
+    <string name="dialog_bonus">Bonus</string>
+    <string name="dialog_earned">Earned*</string>
+    <string name="dialog_note">Note</string>
+
+    <string name="dialog_optional">Optional</string>
+    <string name="dialog_enter_amount">Enter amount</string>
+    <string name="dialog_add_a_note">Add a note</string>
+    <string name="dialog_day_off">Day off</string>
+
+    <string name="dialog_confirm">Confirm</string>
 
 
-
-    <string name="description_btn_settings">Settings button</string>
-    <string name="description_icon_note">Note icon</string>
+    <!-- descriptions for image buttons -->
+    <string name="description_btn_settings">Open settings</string>
+    <string name="description_btn_edit_days">Edit working days</string>
+    <string name="description_icon_note">View or edit note</string>
+    <string name="description_btn_copy">Copy list</string>
 
 </resources>

@@ -1,20 +1,20 @@
-package com.genius.markworkingdaysapp.data.repository
+package com.genius.markworkingdaysapp.data.db
 
-import com.genius.markworkingdaysapp.data.db.dao.WorkDayDao
-import com.genius.markworkingdaysapp.data.db.entity.WorkDayEntity
+import com.genius.markworkingdaysapp.ui.main.models.DayType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 
 class WorkDayRepository(private val dao: WorkDayDao) {
 
-    suspend fun saveDay(date: LocalDate, worked: Boolean, bonus: Int?, note: String?) {
+    suspend fun saveDay(date: LocalDate, dayType: DayType, bonus: Int?, earned: Int?, note: String?) {
         dao.upsert(
             WorkDayEntity(
-                date.toEpochDay(),
-                worked,
-                bonus,
-                note
+                epochDay = date.toEpochDay(),
+                worked = dayType != DayType.NOT_WORKED,
+                bonus = bonus,
+                shortDayEarned = if (dayType == DayType.SHORT) earned else null,
+                note = note
             )
         )
     }

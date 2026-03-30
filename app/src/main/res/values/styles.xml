@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="mainTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:shadowColor">@color/on_primary</item>
+        <item name="android:shadowRadius">6</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+    </style>
+
     <style name="infoText" parent="TextAppearance.AppCompat">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
@@ -9,15 +17,21 @@
     </style>
 
     <style name="mainButtons" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">40sp</item>
-        <item name="android:textColor">@color/btn_text</item>
+        <item name="android:textSize">35sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="settingsParameters" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">25sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/on_surface</item>
+    </style>
+
+    <!-- dialog edit day (chooseType) -->
+    <style name="choseType" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+
     </style>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.genius.markworkingdaysapp.data.db.entity
+package com.genius.markworkingdaysapp.data.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -8,6 +8,7 @@ data class WorkDayEntity(
     @PrimaryKey val epochDay: Long,
     val worked: Boolean,
     val bonus: Int?,
+    val shortDayEarned: Int?,
     val note: String?
 ) {
 }

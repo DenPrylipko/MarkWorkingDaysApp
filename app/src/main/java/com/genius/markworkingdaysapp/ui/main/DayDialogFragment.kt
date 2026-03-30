@@ -1,72 +1,195 @@
 package com.genius.markworkingdaysapp.ui.main
 
-import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Toast
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import com.genius.markworkingdaysapp.R
 import com.genius.markworkingdaysapp.databinding.DialogDayCellEditBinding
-import com.genius.markworkingdaysapp.ui.main.model.DayCell
+import com.genius.markworkingdaysapp.ui.main.models.DayCell
+import com.genius.markworkingdaysapp.ui.main.models.DayType
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.time.LocalDate
 
+data class DayData(
+    val date: LocalDate,
+    val dayType: DayType,
+    val bonus: Int?,
+    val shortDayEarned: Int?,
+    val note: String?
+)
+
 class DayDialogFragment(
-    private val currentDay: DayCell,
-    private val workedThisDay: Boolean? = null,
-    private val onSave: (date: LocalDate, worked: Boolean, bonus: Int?, note: String?) -> Unit
+    private val day: DayCell,
+    private val onConfirm: (DayData) -> Unit
 ) : DialogFragment() {
 
     private var _binding: DialogDayCellEditBinding? = null
     private val binding get() = _binding!!
 
-    @SuppressLint("UseGetLayoutInflater")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogDayCellEditBinding.inflate(LayoutInflater.from(requireContext()))
 
-        val date = currentDay.date
-        val worked = currentDay.worked
-        val bonus = currentDay.bonus
-        val note = currentDay.note
-
-        with(binding) {
-            tvDate.text = date.toString()
-            if (workedThisDay ?: worked)
-                rbWorked.isChecked = true
-            else
-                rbNotWorked.isChecked = true
-            etBonus.setText(if (bonus == null || bonus <= 0) "" else bonus.toString())
-            etNote.setText(if (note == null || note.isBlank()) "" else note)
-        }
+        setUIFromDayType(day.dayType)
 
         val dialog = MaterialAlertDialogBuilder(requireContext())
             .setView(binding.root)
             .setCancelable(true)
             .create()
 
-        binding.imgBtnConfirm.setOnClickListener {
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val width = (resources.displayMetrics.widthPixels * 0.75).toInt()
+        dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-            val worked = binding.rbWorked.isChecked
-            val bonus = binding.etBonus.text.toString().toIntOrNull()
-            val note = binding.etNote.text?.toString()?.takeIf { it.isNotBlank() }
+        binding.tvBtnConfirm.setOnClickListener {
+            onConfirm(getDataFromUI())
+            dismiss()
+        }
+        binding.layoutFullDay.setOnClickListener { setUIFromDayType(DayType.FULL) }
+        binding.layoutShortDay.setOnClickListener { setUIFromDayType(DayType.SHORT) }
+        binding.layoutNotWorked.setOnClickListener { setUIFromDayType(DayType.NOT_WORKED) }
 
-            if (!worked && bonus != null) {
-                Toast.makeText(context, "you can't have bonus if you didn't work", Toast.LENGTH_SHORT).show()
-                binding.etBonus.setTextColor(ContextCompat.getColor(binding.root.context, R.color.error))
+        binding.etAmount.doOnTextChanged { text, _, _, _ ->
+            if (text.toString().toIntOrNull() == null) {
+                binding.tvBtnConfirm.alpha = 0.7f
+                binding.tvBtnConfirm.isEnabled = false
             } else {
-                onSave(date, worked, bonus, note)
-                dismiss()
+                binding.tvBtnConfirm.alpha = 1f
+                binding.tvBtnConfirm.isEnabled = true
             }
 
         }
 
-        binding.imgBtnBack.setOnClickListener {
-            dismiss()
-        }
-
         return dialog
+    }
+
+    private fun getDataFromUI(): DayData {
+        val date = day.date
+        val dayType = when {
+            binding.layoutFullDay.alpha == 1f -> DayType.FULL
+            binding.layoutShortDay.alpha == 1f -> DayType.SHORT
+            else -> DayType.NOT_WORKED
+        }
+        val bonus: Int? = if (dayType == DayType.FULL)
+            binding.etAmount.text.toString().toIntOrNull()
+        else null
+        val shortDayEarned = if (dayType == DayType.SHORT)
+            binding.etAmount.text.toString().toIntOrNull()
+        else null
+        val note = binding.etNote.text.toString()
+
+        return DayData(date, dayType, bonus, shortDayEarned, note)
+
+    }
+
+    private fun setUIFromDayType(dayType: DayType?) {
+        val date = day.date
+        val bonus = day.bonus
+        val shortDayEarned = day.earned
+        val note = day.note
+        binding.tvDate.text = date.dayOfMonth.toString()
+        when (dayType) {
+            DayType.FULL -> {
+                binding.mainLayoutEditDay.setBackgroundResource(R.drawable.shape_stroke_full_day)
+
+                binding.layoutShortDay.alpha = 0.7f
+                binding.layoutFullDay.alpha = 1f
+                binding.layoutNotWorked.alpha = 0.7f
+
+                binding.tvBonusEarned.setTextColor(resources.getColor(R.color.full_day))
+                binding.tvBonusEarned.setText(R.string.dialog_bonus)
+                binding.tvBonusEarned.compoundDrawableTintList =
+                    ContextCompat.getColorStateList(requireContext(), R.color.full_day)
+                binding.tvOptional.isVisible = true
+
+                if (bonus != null && bonus != 0) {
+                    binding.etAmount.setText(bonus.toString())
+                } else {
+                    binding.etAmount.setText("")
+                }
+
+                binding.layoutBonusEarned.isVisible = true
+                binding.layoutDayOff.isVisible = false
+
+                binding.tvBtnConfirm.alpha = 1f
+                binding.tvBtnConfirm.isEnabled = true
+
+            }
+
+            DayType.SHORT -> {
+                binding.mainLayoutEditDay.setBackgroundResource(R.drawable.shape_stroke_short_day)
+
+                binding.layoutFullDay.alpha = 0.7f
+                binding.layoutShortDay.alpha = 1f
+                binding.layoutNotWorked.alpha = 0.7f
+
+                binding.tvBonusEarned.setTextColor(resources.getColor(R.color.short_day))
+                binding.tvBonusEarned.setText(R.string.dialog_earned)
+                binding.tvBonusEarned.compoundDrawableTintList =
+                    ContextCompat.getColorStateList(requireContext(), R.color.short_day)
+
+                binding.tvOptional.isVisible = false
+
+                if (day.dayType == DayType.SHORT) {
+                    binding.etAmount.setText(shortDayEarned.toString())
+                    binding.tvBtnConfirm.alpha = 1f
+                    binding.tvBtnConfirm.isEnabled = true
+                } else {
+                    binding.etAmount.setText("")
+                    binding.tvBtnConfirm.alpha = 0.7f
+                    binding.tvBtnConfirm.isEnabled = false
+                }
+
+
+                binding.layoutBonusEarned.isVisible = true
+                binding.layoutDayOff.isVisible = false
+
+                binding.layoutBonusEarned.backgroundTintList =
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(requireContext(), R.color.surface)
+                    )
+
+            }
+
+            DayType.NOT_WORKED -> {
+                binding.mainLayoutEditDay.setBackgroundResource(R.drawable.shape_stroke_not_worked)
+
+                binding.layoutFullDay.alpha = 0.7f
+                binding.layoutShortDay.alpha = 0.7f
+                binding.layoutNotWorked.alpha = 1f
+
+                binding.layoutBonusEarned.isVisible = false
+                binding.layoutDayOff.isVisible = true
+                binding.tvOptional.isVisible = false
+
+                binding.tvBtnConfirm.alpha = 1f
+                binding.tvBtnConfirm.isEnabled = true
+            }
+
+            else -> {
+                binding.mainLayoutEditDay.setBackgroundResource(R.drawable.shape_stroke_not_worked)
+
+                binding.layoutFullDay.alpha = 0.7f
+                binding.layoutShortDay.alpha = 0.7f
+                binding.layoutNotWorked.alpha = 1f
+
+                binding.layoutBonusEarned.isVisible = false
+                binding.layoutDayOff.isVisible = true
+                binding.tvOptional.isVisible = true
+
+                binding.tvBtnConfirm.alpha = 1f
+                binding.tvBtnConfirm.isEnabled = true
+            }
+        }
+        binding.tvTodayLabel.isVisible = day.date.dayOfMonth == LocalDate.now().dayOfMonth
+        binding.etNote.setText(if (!note.isNullOrBlank()) note else "")
     }
 
     override fun onDestroyView() {

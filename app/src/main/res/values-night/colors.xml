@@ -2,22 +2,18 @@
 <resources>
 
     <color name="primary">#97C6F0</color>
-    <color name="on_primary">#FFFFFF</color>
+    <color name="on_primary">#322317</color>
 
     <color name="secondary">#68B9FF</color>
     <color name="on_secondary">#FFFFFF</color>
 
     <color name="background">#000000</color>
-    <color name="on_background">#535353</color>
+    <color name="on_background">#929292</color>
 
     <color name="surface">#111111</color>
     <color name="on_surface">#CDCDCD</color>
 
     <color name="working">#97D687</color>
-
-    <color name="btn_text">#FFFFFF</color>
-    <color name="btn_no">#7D7D7D</color>
-    <color name="btn_yes">#97D687</color>
 
     <color name="month_day_stroke_default">#9C9C9C</color>
     <color name="month_day_stroke_worked">#97D687</color>

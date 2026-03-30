@@ -9,5 +9,6 @@
     <dimen name="weekday_text_size_default">16sp</dimen>
     <dimen name="weekday_text_size_today">22sp</dimen>
 
-    <dimen name="spacing">10dp</dimen>
+    <dimen name="spacing">5dp</dimen>
+
 </resources>

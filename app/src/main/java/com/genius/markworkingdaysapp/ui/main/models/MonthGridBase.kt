@@ -1,4 +1,4 @@
-package com.genius.markworkingdaysapp.ui.main.model
+package com.genius.markworkingdaysapp.ui.main.models
 
 import java.time.LocalDate
 

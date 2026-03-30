@@ -9,7 +9,6 @@
         android:id="@+id/dayCard"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_gravity="center"
         app:cardBackgroundColor="@color/background"
         app:cardCornerRadius="6dp"
         app:cardElevation="0dp"

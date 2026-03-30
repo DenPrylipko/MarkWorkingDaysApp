@@ -1,123 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- layoutMain -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        android:paddingHorizontal="20dp">
+        android:paddingHorizontal="30dp">
 
-        <ImageButton
-            android:id="@+id/imgBtnSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@color/background"
-            android:contentDescription="@string/description_btn_settings"
-            android:src="@drawable/ic_settings"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvDailyRate"
-            style="@style/infoText"
-            android:layout_width="wrap_content"
+        <!-- layoutTopBar -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutTopBar"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/text_daily_rate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tvCurrentDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:text="@string/default_current_date"
-            android:textSize="50sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvWeekdays"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCurrentDate" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvMonthDays"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvWeekdays" />
-
-        <LinearLayout
-            android:id="@+id/layoutIfWorked"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/layoutInfo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvMonthDays">
+            <ImageButton
+                android:id="@+id/imgBtnSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/background"
+                android:contentDescription="@string/description_btn_settings"
+                android:src="@drawable/ic_settings"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvWorkedTodayQuestion"
+                android:id="@+id/tvDailyRate"
+                style="@style/infoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/text_question_worked_today"
-                android:textSize="40sp"
-                android:textStyle="bold" />
+                android:text="@string/text_daily_rate"
+                app:layout_constraintBottom_toBottomOf="@+id/imgBtnSettings"
+                app:layout_constraintEnd_toEndOf="@+id/imgBtnCopy"
+                app:layout_constraintStart_toStartOf="@+id/imgBtnSettings"
+                app:layout_constraintTop_toTopOf="@+id/imgBtnSettings" />
 
-            <LinearLayout
-                android:id="@+id/layoutYesNoButtons"
-                style="?android:attr/buttonBarStyle"
+            <ImageButton
+                android:id="@+id/imgBtnCopy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/layoutInfo"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/description_btn_copy"
+                android:src="@drawable/ic_copy"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/btnNo"
-                    style="@style/mainButtons"
-                    android:layout_width="120dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="20dp"
-                    android:backgroundTint="@color/btn_no"
-                    android:text="@string/text_no"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <Button
-                    android:id="@+id/btnYes"
-                    style="@style/mainButtons"
-                    android:layout_width="120dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="20dp"
-                    android:backgroundTint="@color/btn_yes"
-                    android:text="@string/text_yes"/>
 
-            </LinearLayout>
-
-        </LinearLayout>
-
+        <!-- layoutBottom -->
         <LinearLayout
-            android:id="@+id/layoutInfo"
-            android:layout_width="wrap_content"
+            android:id="@+id/layoutBottom"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -147,21 +91,116 @@
 
         </LinearLayout>
 
+        <!-- dimOverlay -->
+        <View
+            android:id="@+id/dimOverlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#99000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- layoutCalendar -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutCalendar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutTopBar">
+
+            <TextView
+                android:id="@+id/tvCurrentDate"
+                style="@style/mainTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/default_current_date"
+                android:textSize="50sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvWeekdays"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCurrentDate" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMonthDays"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rvWeekdays" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- touchBlocker -->
         <View
             android:id="@+id/touchBlocker"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@android:color/transparent"
             android:clickable="true"
             android:focusable="true"
             android:visibility="gone"
-            android:background="@android:color/transparent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- layoutMonthChoose -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutMonthChoose"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/background"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvCurrentYear"
+                style="@style/mainTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:text="@string/default_current_year"
+                android:textSize="80sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMonths"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCurrentYear" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- layoutDrawer -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutDrawerSettings"
         android:layout_width="320dp"
@@ -175,22 +214,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_settings"
+            android:textColor="@color/on_background"
             android:textSize="35sp"
             android:textStyle="bold"
-            android:textColor="@color/on_background"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/layoutDailyRate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="100dp"
-            app:layout_constraintTop_toBottomOf="@+id/tvSettings"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/tvSettings">
 
 
             <TextView
@@ -198,17 +237,17 @@
                 style="@style/settingsParameters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_question_daily_rate"/>
+                android:text="@string/settings_question_daily_rate" />
 
             <EditText
                 android:id="@+id/etDailyRate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:inputType="number"
-                android:maxLength="3"/>
+                android:maxLength="3"
+                android:textSize="25sp" />
 
         </LinearLayout>
 
@@ -216,28 +255,28 @@
             android:id="@+id/layoutCurrency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="50dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutDailyRate">
 
             <TextView
-                style="@style/settingsParameters"
                 android:id="@+id/tvCurrency"
+                style="@style/settingsParameters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/settings_question_currency"/>
+                android:text="@string/settings_question_currency" />
 
             <EditText
                 android:id="@+id/etCurrency"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:hint="..."/>
+                android:hint="..."
+                android:textSize="25sp" />
 
         </LinearLayout>
 
@@ -256,6 +295,7 @@
                 style="@style/settingsParameters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/settings_question_first_weekday" />
 
             <RadioGroup

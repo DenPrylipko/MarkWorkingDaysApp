@@ -1,9 +1,9 @@
-package com.genius.markworkingdaysapp.data.db.dao
+package com.genius.markworkingdaysapp.data.db
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
-import com.genius.markworkingdaysapp.data.db.entity.WorkDayEntity
+import com.genius.markworkingdaysapp.data.db.WorkDayEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
