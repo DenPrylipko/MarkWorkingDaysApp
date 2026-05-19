@@ -72,46 +72,50 @@ class MonthGridAdapter(
 
             root.alpha = if (element.isInCurrentMonth) 1f else 0.25f
 
-            if (element.date.monthValue == LocalDate.now().monthValue) {
-                ivNote.isVisible = !element.note.isNullOrBlank()
-                when (element.dayType) {
-                    DayType.FULL -> {
-                        dayCard.strokeColor = strokeColorFullDay
-                        tvDay.setTextColor(textColorFullDay)
-                        dayCard.strokeWidth = strokeWidthDefault
-                        tvDay.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeDefault)
-                        tvBonus.text = if (element.bonus != null && element.bonus != 0) "+${element.bonus}" else ""
-                        tvBonus.isVisible = true
-                    }
-                    DayType.SHORT -> {
-                        dayCard.strokeColor = strokeColorShortDay
-                        tvDay.setTextColor(textColorShortDay)
-                        dayCard.strokeWidth = strokeWidthDefault
-                        tvDay.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeDefault)
-                        tvBonus.text = element.earned.toString()
-                        tvBonus.isVisible = true
-                    }
-                    else -> {
-                        dayCard.strokeColor = strokeColorNotWorked
-                        tvDay.setTextColor(textColorNotWorked)
-                        dayCard.strokeWidth = strokeWidthDefault
-                        tvDay.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeDefault)
-                        tvBonus.isGone = true
-                    }
+            ivNote.isVisible = !element.note.isNullOrBlank()
+            when (element.dayType) {
+                DayType.FULL -> {
+                    dayCard.strokeColor = strokeColorFullDay
+                    tvDay.setTextColor(textColorFullDay)
+                    dayCard.strokeWidth = strokeWidthDefault
+                    tvDay.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeDefault)
+                    tvBonus.text =
+                        if (element.bonus != null && element.bonus != 0) "+${element.bonus}" else ""
+                    tvBonus.isVisible = true
+                }
+
+                DayType.SHORT -> {
+                    dayCard.strokeColor = strokeColorShortDay
+                    tvDay.setTextColor(textColorShortDay)
+                    dayCard.strokeWidth = strokeWidthDefault
+                    tvDay.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeDefault)
+                    tvBonus.text = element.earned.toString()
+                    tvBonus.isVisible = true
+                }
+
+                else -> {
+                    dayCard.strokeColor = strokeColorNotWorked
+                    tvDay.setTextColor(textColorNotWorked)
+                    dayCard.strokeWidth = strokeWidthDefault
+                    tvDay.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeDefault)
+                    tvBonus.isGone = true
+                }
 
 
+            }
+            if (element.date.monthValue == LocalDate.now().monthValue
+                && element.date.dayOfMonth == LocalDate.now().dayOfMonth
+            ) {
+                dayCard.strokeColor = when (element.dayType) {
+                    DayType.FULL -> strokeColorFullDay
+                    DayType.SHORT -> strokeColorShortDay
+                    else -> strokeColorToday
                 }
-                if (element.date.dayOfMonth == LocalDate.now().dayOfMonth) {
-                    dayCard.strokeColor = when (element.dayType) {
-                        DayType.FULL -> strokeColorFullDay
-                        DayType.SHORT -> strokeColorShortDay
-                        else -> strokeColorToday
-                    }
-                    tvDay.setTextColor(textColorToday)
-                    dayCard.strokeWidth = strokeWidthToday
-                    tvDay.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeToday)
-                }
-            } else {
+                tvDay.setTextColor(textColorToday)
+                dayCard.strokeWidth = strokeWidthToday
+                tvDay.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeToday)
+            }
+            if (!element.isInCurrentMonth) {
                 dayCard.strokeColor = strokeColorNotWorked
                 tvDay.setTextColor(textColorNotWorked)
                 dayCard.strokeWidth = strokeWidthDefault
@@ -136,9 +140,11 @@ class MonthGridAdapter(
                 onClick(element)
             }
         }
+
     }
 
     override fun getItemCount(): Int = items.size
+
 
     fun updateItems(newItems: List<DayCell>) {
         items = newItems

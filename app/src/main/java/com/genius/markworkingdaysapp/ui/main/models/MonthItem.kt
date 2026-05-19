@@ -1,8 +1,9 @@
 package com.genius.markworkingdaysapp.ui.main.models
 
+import java.time.LocalDate
 import java.time.YearMonth
 
-enum class MonthStatus { PAST, CURRENT, FUTURE }
+enum class MonthStatus { CURRENT, PAST_NOT_WORKED, PAST_WORKED, FUTURE }
 
 class MonthItem(
     val yearMonth: YearMonth,

@@ -1,4 +1,4 @@
-package com.genius.markworkingdaysapp.ui.adapter
+package com.genius.markworkingdaysapp.ui.main.adapters
 
 import android.util.TypedValue
 import android.view.LayoutInflater

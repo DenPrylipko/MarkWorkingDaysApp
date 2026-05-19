@@ -13,11 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginVertical="20dp"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/layoutDayTypeChose"
-        app:layout_constraintStart_toEndOf="@id/layoutDayTypeChose">
+        app:layout_constraintTop_toTopOf="@id/layoutDayTypeChose"
+        app:layout_constraintBottom_toBottomOf="@id/layoutDayTypeChose">
 
         <TextView
             android:id="@+id/tvDate"
@@ -34,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/dialog_today"
+            android:textStyle="bold"
             android:textColor="@color/secondary_text"
             android:textSize="15sp" />
 
@@ -71,7 +71,7 @@
                 android:paddingHorizontal="28dp"
                 android:paddingVertical="4dp"
                 android:text="@string/dialog_full_day"
-                android:textColor="@color/text" />
+                android:textColor="@color/dialog_text" />
 
         </LinearLayout>
 
@@ -96,7 +96,7 @@
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="4dp"
                 android:text="@string/dialog_short_day"
-                android:textColor="@color/text" />
+                android:textColor="@color/dialog_text" />
 
         </LinearLayout>
 
@@ -120,7 +120,7 @@
                 android:paddingHorizontal="22dp"
                 android:paddingVertical="4dp"
                 android:text="@string/dialog_not_worked"
-                android:textColor="@color/text" />
+                android:textColor="@color/dialog_text" />
 
         </LinearLayout>
 
@@ -208,7 +208,7 @@
             android:paddingVertical="30dp"
             android:layout_gravity="center"
             android:visibility="gone"
-            android:background="@color/background">
+            android:background="@color/surface_main">
 
             <ImageView
                 android:id="@+id/ivDayOff"
@@ -291,7 +291,7 @@
         android:gravity="center"
         android:drawablePadding="7dp"
         android:text="@string/dialog_confirm"
-        android:textColor="@color/text"
+        android:textColor="@color/dialog_text"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

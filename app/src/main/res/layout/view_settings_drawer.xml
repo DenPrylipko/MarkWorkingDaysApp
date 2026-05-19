@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settingsDrawerView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@color/surface_main"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_settings"
+        android:textColor="@color/on_background"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!-- layout options -->
+    <LinearLayout
+        android:id="@+id/layoutOptions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSettings"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- layout daily rate -->
+        <LinearLayout
+            android:id="@+id/layoutDailyRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_bg_label"
+            android:backgroundTint="@color/surface"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                style="@style/settingsParameters"
+                android:id="@+id/tvSettingsDailyRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/settings_daily_rate"/>
+
+            <EditText
+                android:id="@+id/etDailyRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_bg_label"
+                android:backgroundTint="@color/bg_edit_text"
+                android:gravity="center"
+                android:hint="@string/settings_daily_rate_hint"
+                android:paddingHorizontal="25dp"
+                android:paddingVertical="7dp"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- layout currency -->
+        <LinearLayout
+            android:id="@+id/layoutCurrency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_bg_label"
+            android:backgroundTint="@color/surface"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:padding="10dp">
+
+            <TextView
+                style="@style/settingsParameters"
+                android:id="@+id/tvCurrency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/settings_currency"/>
+
+            <EditText
+                android:id="@+id/etCurrency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_bg_label"
+                android:backgroundTint="@color/bg_edit_text"
+                android:gravity="center"
+                android:hint="@string/settings_currency_hint"
+                android:paddingHorizontal="25dp"
+                android:paddingVertical="7dp"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- layout first day of week -->
+        <LinearLayout
+            android:id="@+id/layoutFirstDayOfWeek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_bg_label"
+            android:backgroundTint="@color/surface"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvFirstDayOfWeek"
+                style="@style/settingsParameters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/settings_first_weekday" />
+
+            <LinearLayout
+                android:id="@+id/layoutMondaySunday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:weightSum="2">
+
+                <FrameLayout
+                    android:id="@+id/containerMonday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingVertical="10dp">
+
+                <TextView
+                    android:id="@+id/tvChooseMonday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="10dp"
+                    android:alpha="0.5"
+                    android:background="@drawable/shape_bg_label"
+                    android:backgroundTint="@color/bg_edit_text"
+                    android:gravity="center"
+                    android:paddingHorizontal="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:paddingVertical="10dp"
+                    android:text="@string/settings_monday" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/containerSunday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingVertical="10dp">
+
+                <TextView
+                    android:id="@+id/tvChooseSunday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="10dp"
+                    android:textSize="20sp"
+                    android:paddingHorizontal="10dp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/bg_edit_text"
+                    android:background="@drawable/shape_bg_label"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:text="@string/settings_sunday" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- layout remind to log day -->
+        <LinearLayout
+            android:id="@+id/layoutRemindToLogDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_bg_label"
+            android:backgroundTint="@color/surface"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/settingsParameters"
+                android:id="@+id/tvRemindToLogDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/settings_remind_to_log_day"/>
+
+            <LinearLayout
+                android:id="@+id/layoutSetupRemindToLogDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:paddingHorizontal="10dp"
+                android:weightSum="2">
+
+                <FrameLayout
+                    android:id="@+id/containerRemindToLogDayOnOff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/tvRemindToLogDayOnOff"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dialog_text"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="15dp"
+                    android:backgroundTint="@color/bg_edit_text"
+                    android:background="@drawable/shape_bg_label"
+                    android:text="@string/off"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/containerReminderTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10dp">
+
+
+                <TextView
+                    android:id="@+id/tvReminderTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="20dp"
+                    android:backgroundTint="@color/bg_edit_text"
+                    android:background="@drawable/shape_bg_label"
+                    android:gravity="center"
+                    android:text="20:00"/>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvRemindToLogDayDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/settings_desc_remind_to_log_day"
+                android:layout_gravity="center"
+                android:alpha="0.5"
+                android:textStyle="bold"
+                android:paddingHorizontal="50dp"
+                android:gravity="center"
+                android:textSize="20sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

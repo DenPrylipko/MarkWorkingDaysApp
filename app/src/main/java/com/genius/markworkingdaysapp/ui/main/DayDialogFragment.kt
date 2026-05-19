@@ -14,17 +14,10 @@ import androidx.fragment.app.DialogFragment
 import com.genius.markworkingdaysapp.R
 import com.genius.markworkingdaysapp.databinding.DialogDayCellEditBinding
 import com.genius.markworkingdaysapp.ui.main.models.DayCell
+import com.genius.markworkingdaysapp.ui.main.models.DayData
 import com.genius.markworkingdaysapp.ui.main.models.DayType
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.time.LocalDate
-
-data class DayData(
-    val date: LocalDate,
-    val dayType: DayType,
-    val bonus: Int?,
-    val shortDayEarned: Int?,
-    val note: String?
-)
 
 class DayDialogFragment(
     private val day: DayCell,
@@ -33,6 +26,7 @@ class DayDialogFragment(
 
     private var _binding: DialogDayCellEditBinding? = null
     private val binding get() = _binding!!
+    private var currentDayType: DayType? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogDayCellEditBinding.inflate(LayoutInflater.from(requireContext()))
@@ -57,18 +51,36 @@ class DayDialogFragment(
         binding.layoutNotWorked.setOnClickListener { setUIFromDayType(DayType.NOT_WORKED) }
 
         binding.etAmount.doOnTextChanged { text, _, _, _ ->
-            if (text.toString().toIntOrNull() == null) {
-                binding.tvBtnConfirm.alpha = 0.7f
-                binding.tvBtnConfirm.isEnabled = false
-            } else {
-                binding.tvBtnConfirm.alpha = 1f
-                binding.tvBtnConfirm.isEnabled = true
-            }
 
+            when (currentDayType) {
+                DayType.FULL -> {
+                    if (text.toString().toIntOrNull() == null && !text.toString().isBlank()) {
+                        binding.tvBtnConfirm.alpha = 0.7f
+                        binding.tvBtnConfirm.isEnabled = false
+                    } else {
+                        binding.tvBtnConfirm.alpha = 1f
+                        binding.tvBtnConfirm.isEnabled = true
+                    }
+                }
+
+                DayType.SHORT -> {
+                    if (text.toString().toIntOrNull() == null) {
+                        binding.tvBtnConfirm.alpha = 0.7f
+                        binding.tvBtnConfirm.isEnabled = false
+                    } else {
+                        binding.tvBtnConfirm.alpha = 1f
+                        binding.tvBtnConfirm.isEnabled = true
+                    }
+                }
+
+                else -> return@doOnTextChanged
+
+            }
         }
 
         return dialog
     }
+
 
     private fun getDataFromUI(): DayData {
         val date = day.date
@@ -121,6 +133,8 @@ class DayDialogFragment(
                 binding.tvBtnConfirm.alpha = 1f
                 binding.tvBtnConfirm.isEnabled = true
 
+                currentDayType = DayType.FULL
+
             }
 
             DayType.SHORT -> {
@@ -156,6 +170,8 @@ class DayDialogFragment(
                         ContextCompat.getColor(requireContext(), R.color.surface)
                     )
 
+                currentDayType = DayType.SHORT
+
             }
 
             DayType.NOT_WORKED -> {
@@ -171,6 +187,8 @@ class DayDialogFragment(
 
                 binding.tvBtnConfirm.alpha = 1f
                 binding.tvBtnConfirm.isEnabled = true
+
+                currentDayType = DayType.NOT_WORKED
             }
 
             else -> {
@@ -186,6 +204,8 @@ class DayDialogFragment(
 
                 binding.tvBtnConfirm.alpha = 1f
                 binding.tvBtnConfirm.isEnabled = true
+
+                currentDayType = null
             }
         }
         binding.tvTodayLabel.isVisible = day.date.dayOfMonth == LocalDate.now().dayOfMonth

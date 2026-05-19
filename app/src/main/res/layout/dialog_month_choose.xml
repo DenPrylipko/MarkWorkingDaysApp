@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/shape_stroke_month_choose"
+    android:padding="20dp">
+
+
+    <TextView
+        android:id="@+id/tvCurrentYear"
+        style="@style/mainTextStyle"
+        app:layout_constraintBottom_toTopOf="@id/rvMonths"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_current_year"
+        android:textSize="68sp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/imgBtnPreviousYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_left_circle"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="20dp"
+        android:contentDescription="@string/desc_previous_year"
+        app:layout_constraintEnd_toStartOf="@+id/tvCurrentYear"
+        app:layout_constraintTop_toTopOf="@+id/tvCurrentYear"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCurrentYear"/>
+
+
+    <ImageButton
+        android:id="@+id/imgBtnNextYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_right_circle"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="20dp"
+        android:contentDescription="@string/desc_next_year"
+        app:layout_constraintStart_toEndOf="@+id/tvCurrentYear"
+        app:layout_constraintTop_toTopOf="@+id/tvCurrentYear"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCurrentYear"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMonths"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCurrentYear"
+        android:layout_marginTop="10dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

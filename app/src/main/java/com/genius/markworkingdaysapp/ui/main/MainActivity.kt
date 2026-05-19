@@ -1,39 +1,52 @@
 package com.genius.markworkingdaysapp.ui.main
 
+import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.drawable.GradientDrawable
+import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.GridLayoutManager
 import com.genius.markworkingdaysapp.R
-import com.genius.markworkingdaysapp.buildMonthItemsForYear
+import com.genius.markworkingdaysapp.data.NotificationHelper
+import com.genius.markworkingdaysapp.data.ReminderScheduler
 import com.genius.markworkingdaysapp.getMonthTitle
-import com.genius.markworkingdaysapp.data.AppSettings
 import com.genius.markworkingdaysapp.databinding.ActivityMainBinding
-import com.genius.markworkingdaysapp.ui.adapter.WeekdaysAdapter
+import com.genius.markworkingdaysapp.ui.main.adapters.WeekdaysAdapter
 import com.genius.markworkingdaysapp.ui.common.GridSpacingItemDecoration
 import com.genius.markworkingdaysapp.ui.common.NoScrollGridLayoutManager
 import com.genius.markworkingdaysapp.ui.main.adapters.MonthGridAdapter
 import com.genius.markworkingdaysapp.ui.main.adapters.MonthsAdapter
+import com.genius.markworkingdaysapp.ui.main.models.DayCell
 import com.genius.markworkingdaysapp.ui.main.models.DayType
 import com.genius.markworkingdaysapp.ui.main.models.MainUiState
+import com.genius.markworkingdaysapp.ui.main.models.MonthItem
+import com.genius.markworkingdaysapp.ui.main.models.MonthStatus
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.launch
-import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 private const val DAYS_IN_WEEK = 7
@@ -42,15 +55,20 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var backCallback: OnBackPressedCallback
-    private val viewModel: MainViewModel by viewModels()
     private lateinit var monthDaysAdapter: MonthGridAdapter
     private lateinit var weekdaysAdapter: WeekdaysAdapter
-    private lateinit var monthsAdapter: MonthsAdapter
+    private lateinit var notificationHelper: NotificationHelper
+    private lateinit var scheduler: ReminderScheduler
+    private val viewModel: MainViewModel by viewModels()
     private var currentState: MainUiState? = null
-    var uiSettingsInitialized = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        scheduler = ReminderScheduler(this)
+
+        notificationHelper = NotificationHelper(this)
+        notificationHelper.createChannel()
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -67,25 +85,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.etDailyRate.doAfterTextChanged { editable ->
-            val value = editable?.toString()?.toIntOrNull() ?: 0
-            viewModel.setDailyRate(value)
-        }
-        binding.etCurrency.doAfterTextChanged { editable ->
-            val value = editable?.toString() ?: ""
-            viewModel.setCurrency(value)
-        }
-        binding.rgChooseFirstDayOfWeek.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.rbMonday -> viewModel.setFirstDayOfWeek(AppSettings.FirstDayOfWeek.MONDAY)
-                R.id.rbSunday -> viewModel.setFirstDayOfWeek(AppSettings.FirstDayOfWeek.SUNDAY)
-            }
-        }
-
-
-        binding.tvCurrentDate.setOnClickListener {
-            binding.layoutMonthChoose.isVisible = true
-            binding.touchBlocker.isVisible = true
+        binding.tvCurrentMonth.setOnClickListener {
+            openMonthChooseDialog(viewModel.uiState.value.currentMonth)
         }
         binding.imgBtnSettings.setOnClickListener {
             if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -96,6 +97,14 @@ class MainActivity : AppCompatActivity() {
         }
         binding.imgBtnCopy.setOnClickListener {
             copyData(currentState)
+        }
+        binding.layoutDayCard.setOnClickListener {
+
+            val today = LocalDate.now()
+            val dayCell = viewModel.uiState.value.monthDaysData.find { it.date == today }
+                ?: DayCell(date = today, isInCurrentMonth = true)
+
+            openDayEditDialog(dayCell)
         }
 
         binding.drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
@@ -116,11 +125,6 @@ class MainActivity : AppCompatActivity() {
                         binding.drawerLayout.closeDrawer(GravityCompat.START)
                     }
 
-                    binding.layoutMonthChoose.isVisible -> {
-                        binding.layoutMonthChoose.isGone = true
-                        binding.touchBlocker.isGone = true
-                    }
-
                     else -> {
                         isEnabled = false
                         onBackPressedDispatcher.onBackPressed()
@@ -131,6 +135,40 @@ class MainActivity : AppCompatActivity() {
         }
 
         onBackPressedDispatcher.addCallback(this@MainActivity, backCallback)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        NotificationManagerCompat.from(this)
+            .cancel(NotificationHelper.NOTIFICATION_ID)
+    }
+
+    private val requestNotificationPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                notificationHelper.showTestNotification()
+            }
+        }
+
+    private fun openMonthChooseDialog(yearMonth: YearMonth) {
+
+        MonthChooseDialogFragment(yearMonth) {
+            viewModel.onMonthChange(it)
+        }.show(supportFragmentManager, "MonthChooseDialog")
+    }
+
+    private fun openDayEditDialog(day: DayCell) {
+
+        DayDialogFragment(day) { data ->
+            viewModel.onSaveDay(
+                data.date,
+                data.dayType,
+                data.bonus,
+                data.shortDayEarned,
+                data.note
+            )
+        }.show(supportFragmentManager, "DayDialog")
     }
 
     private fun copyData(state: MainUiState?) = with(binding) {
@@ -144,11 +182,11 @@ class MainActivity : AppCompatActivity() {
                     "${day.date.format(formatter)} " +
                             when (day.dayType) {
                                 DayType.FULL if day.bonus != null && day.bonus != 0 -> {
-                                    "+ ${day.bonus} ${state.currency}"
+                                    "+${day.bonus} ${state.settingsDrawerState.currency}"
                                 }
 
                                 DayType.SHORT -> {
-                                    "${day.earned} ${state.currency}"
+                                    "${day.earned} ${state.settingsDrawerState.currency}"
                                 }
 
                                 else -> {
@@ -165,20 +203,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun render(state: MainUiState) = with(binding) {
 
-        currentState = state
+        layoutDayCard.isVisible = state.currentMonth.monthValue == state.now.monthValue
+        setCurrentMonthView(state)
+        monthDaysAdapter.updateItems(state.monthDaysData)
+        weekdaysAdapter.updateItems(state.weekdaysData)
 
-        if (!uiSettingsInitialized) {
-            etDailyRate.setText(state.dailyRate.toString())
-            etCurrency.setText(state.currency)
-
-            uiSettingsInitialized = true
-        }
-
-        tvCurrentDate.text = getMonthTitle(state.currentMonth)
+        tvCurrentMonth.text = getMonthTitle(state.currentMonth)
         tvDailyRate.text = getString(
             R.string.text_daily_rate,
-            state.dailyRate,
-            state.currency
+            state.settingsDrawerState.dailyRate,
+            state.settingsDrawerState.currency
         )
         tvWorkingDays.text = resources.getQuantityString(
             R.plurals.working_days,
@@ -188,52 +222,116 @@ class MainActivity : AppCompatActivity() {
         tvTotalBonuses.text = getString(
             R.string.text_total_bonuses,
             state.monthStats.totalBonuses,
-            state.currency
+            state.settingsDrawerState.currency
         )
         tvTotalEarned.text = getString(
             R.string.text_total_earned,
             state.monthStats.totalEarned,
-            state.currency
+            state.settingsDrawerState.currency
         )
 
-        if (state.firstDayOfWeek == DayOfWeek.SUNDAY)
-            rbSunday.isChecked = true
-        else
-            rbMonday.isChecked = true
+        currentState = state
 
-        monthDaysAdapter.updateItems(state.monthDaysData)
-        weekdaysAdapter.updateItems(state.weekdaysData)
+
+        settingsDrawerView.render(state.settingsDrawerState)
+
+        settingsDrawerView.onDailyRateChange = { string ->
+            viewModel.onDailyRateChange(
+                dailyRate = string.toIntOrNull() ?: 0
+            )
+        }
+
+        settingsDrawerView.onCurrencyChange = { string ->
+            viewModel.onCurrencyChange(string)
+        }
+
+        settingsDrawerView.onMondayClick = {
+            viewModel.onMondayClicked()
+        }
+        settingsDrawerView.onSundayClick = {
+            viewModel.onSundayClicked()
+        }
+        settingsDrawerView.onRemindToLogDayOnOffClick = {
+            viewModel.onRemindToLogDayOnOffClicked()
+
+            if (!state.settingsDrawerState.notificationsEnabled) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    val granted = ContextCompat.checkSelfPermission(
+                        this@MainActivity,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_GRANTED
+
+                    if (granted) {
+                        scheduler.schedule(
+                            state.settingsDrawerState.reminderHour,
+                            state.settingsDrawerState.reminderMinute
+                        )
+                    } else {
+                        requestNotificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                } else {
+                    scheduler.schedule(
+                        state.settingsDrawerState.reminderHour,
+                        state.settingsDrawerState.reminderMinute
+                    )
+                }
+            } else {
+                scheduler.cancel()
+            }
+        }
+        settingsDrawerView.onReminderTimeClick = reminderTimeClick@ {
+            if (!state.settingsDrawerState.notificationsEnabled) return@reminderTimeClick
+
+            showTimePicker(
+                hour = state.settingsDrawerState.reminderHour,
+                minute = state.settingsDrawerState.reminderMinute
+            )
+        }
+
+        val dayData = state.monthDaysData.find { it.date == state.now }
+
+        layoutDayCard.setData(dayData, state.settingsDrawerState.currency, state.settingsDrawerState.dailyRate)
+
+    }
+
+    private fun setCurrentMonthView(state: MainUiState) = with(binding) {
+        val item = state.monthItems.find { it.yearMonth == state.currentMonth }
+            ?: MonthItem(
+                state.currentMonth,
+                getMonthTitle(state.currentMonth),
+                MonthStatus.CURRENT
+            )
+
+        when(item.status) {
+            MonthStatus.CURRENT -> {
+                tvCurrentMonth.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.shape_stroke_month_item_current)
+            }
+            MonthStatus.PAST_NOT_WORKED -> {
+                tvCurrentMonth.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.shape_stroke_month_item_past_not_worked)
+            }
+
+            MonthStatus.PAST_WORKED -> {
+                tvCurrentMonth.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.shape_stroke_month_item_past_worked)
+            }
+
+            MonthStatus.FUTURE -> {
+                tvCurrentMonth.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.shape_stroke_month_item_future)
+            }
+        }
+
     }
 
     private fun setupRecyclerViews() = with(binding) {
         rvMonthDays.layoutManager = NoScrollGridLayoutManager(this@MainActivity, DAYS_IN_WEEK)
         rvWeekdays.layoutManager = NoScrollGridLayoutManager(this@MainActivity, DAYS_IN_WEEK)
-        rvMonths.layoutManager = GridLayoutManager(this@MainActivity, 1)
 
         monthDaysAdapter = MonthGridAdapter(emptyList()) { dayCell ->
-            val currentDay =
-                viewModel.uiState.value.monthDaysData.find { it.date == dayCell.date } ?: dayCell
-
-            DayDialogFragment(currentDay) { data ->
-                viewModel.onSaveDay(
-                    data.date,
-                    data.dayType,
-                    data.bonus,
-                    data.shortDayEarned,
-                    data.note
-                )
-            }.show(supportFragmentManager, "DayDialog")
+            openDayEditDialog(dayCell)
         }
         weekdaysAdapter = WeekdaysAdapter(emptyList())
-        monthsAdapter = MonthsAdapter(buildMonthItemsForYear(2026)) { month ->
-            viewModel.setCurrentMonth(month.yearMonth)
-            layoutMonthChoose.isGone = true
-            touchBlocker.isGone = true
-        }
 
         rvMonthDays.adapter = monthDaysAdapter
         rvWeekdays.adapter = weekdaysAdapter
-        rvMonths.adapter = monthsAdapter
 
         rvMonthDays.addItemDecoration(
             GridSpacingItemDecoration(
@@ -245,11 +343,32 @@ class MainActivity : AppCompatActivity() {
                 DAYS_IN_WEEK, 10, false
             )
         )
-        rvMonths.addItemDecoration(
-            GridSpacingItemDecoration(
-                1, 10, false
+    }
+
+    private fun showTimePicker(hour: Int, minute: Int) {
+        val picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .setHour(hour)
+            .setMinute(minute)
+            .setTitleText("Select time")
+            .build()
+
+        picker.addOnPositiveButtonClickListener {
+            val hour = picker.hour
+            val minute = picker.minute
+
+            viewModel.onReminderTimeSelected(
+                hour = hour,
+                minute = minute
             )
-        )
+
+            if (viewModel.uiState.value.settingsDrawerState.notificationsEnabled) {
+                scheduler.cancel()
+                scheduler.schedule(hour, minute)
+            }
+        }
+
+        picker.show(supportFragmentManager, "reminder_time_picker")
     }
 
     private fun applyInsets() {

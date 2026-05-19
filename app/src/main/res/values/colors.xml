@@ -9,26 +9,36 @@
 
     <color name="background">#FFFFFF</color>
     <color name="on_background">#666666</color>
+    <color name="surface_main">#030303</color>
     <color name="surface">#0D0D0D</color>
     <color name="on_surface">#383838</color>
 
+    <!-- month choose colors -->
+    <color name="current_month">@color/primary</color>
+    <color name="past_month">#44A0A8</color>
+    <color name="future_month">#4D4D4D</color>
+    <color name="stroke_month_card">#FFFFFF</color>
 
-    <!-- dialog edit day colors -->
-    <color name="text">#FFFFFF</color>
+    <color name="solid_month_card_current_month">@color/primary</color>
+    <color name="solid_month_card_past_month_worked">#97D687</color>
+    <color name="solid_month_card_past_month_not_worked">#4D4D4D</color>
+    <color name="solid_month_card_future_month">#4D4D4D</color>
 
+
+    <!-- dialog day colors -->
+    <color name="dialog_text">#FFFFFF</color>
     <color name="full_day">#97D687</color>
     <color name="short_day">#FF9800</color>
     <color name="not_worked">#535353</color>
-
     <color name="note">#B4B4B4</color>
-
     <color name="bg_edit_text">#3E3E3E</color>
-
     <color name="secondary_text">#828282</color>
-
-
     <color name="dialog_surface">#21351D</color>
-    <!-- dialog edit day colors -->
+
+
+    <color name="view_text">#B4B4B4</color>
+    <color name="view_earned_bg">#535353</color>
+
 
     <!-- other colors -->
     <color name="working">#5C8F4F</color>

@@ -57,7 +57,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         <!-- layoutBottom -->
         <LinearLayout
             android:id="@+id/layoutBottom"
@@ -91,6 +90,17 @@
 
         </LinearLayout>
 
+        <!-- today status view -->
+        <com.genius.markworkingdaysapp.ui.main.TodayStatusView
+            android:id="@+id/layoutDayCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/layoutBottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutCalendar" />
+
         <!-- dimOverlay -->
         <View
             android:id="@+id/dimOverlay"
@@ -116,13 +126,16 @@
             app:layout_constraintTop_toBottomOf="@+id/layoutTopBar">
 
             <TextView
-                android:id="@+id/tvCurrentDate"
-                style="@style/mainTextStyle"
+                android:id="@+id/tvCurrentMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/default_current_date"
-                android:textSize="50sp"
-                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_stroke_month_choose"
+                android:paddingHorizontal="40dp"
+                android:paddingVertical="10dp"
+                android:text="January"
+                android:textColor="@color/on_primary"
+                android:textSize="35sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -134,7 +147,7 @@
                 android:layout_marginTop="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCurrentDate" />
+                app:layout_constraintTop_toBottomOf="@+id/tvCurrentMonth" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMonthDays"
@@ -161,42 +174,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- layoutMonthChoose -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutMonthChoose"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/background"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/tvCurrentYear"
-                style="@style/mainTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:text="@string/default_current_year"
-                android:textSize="80sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvMonths"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCurrentYear" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -206,125 +183,13 @@
         android:layout_width="320dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/surface"
+        android:background="@color/surface_main"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_settings"
-            android:textColor="@color/on_background"
-            android:textSize="35sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/layoutDailyRate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvSettings">
-
-
-            <TextView
-                android:id="@+id/tvSettingsDailyRate"
-                style="@style/settingsParameters"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_question_daily_rate" />
-
-            <EditText
-                android:id="@+id/etDailyRate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="3"
-                android:textSize="25sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutCurrency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutDailyRate">
-
-            <TextView
-                android:id="@+id/tvCurrency"
-                style="@style/settingsParameters"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/settings_question_currency" />
-
-            <EditText
-                android:id="@+id/etCurrency"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:hint="..."
-                android:textSize="25sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutFirstDayOfWeek"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutCurrency">
-
-            <TextView
-                android:id="@+id/tvSettingsFirstDayOfWeek"
-                style="@style/settingsParameters"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/settings_question_first_weekday" />
-
-            <RadioGroup
-                android:id="@+id/rgChooseFirstDayOfWeek"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rbMonday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_choose_monday"
-                    android:textSize="20sp"
-                    app:buttonTint="@color/radio_tint" />
-
-                <RadioButton
-                    android:id="@+id/rbSunday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_choose_sunday"
-                    android:textSize="20sp"
-                    app:buttonTint="@color/radio_tint" />
-
-            </RadioGroup>
-
-        </LinearLayout>
-
+<com.genius.markworkingdaysapp.ui.main.SettingsDrawerView
+    android:id="@+id/settingsDrawerView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

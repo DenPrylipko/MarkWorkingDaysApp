@@ -4,29 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
+    <FrameLayout
         android:id="@+id/monthCard"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:backgroundTint="@color/primary"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="0dp"
-        app:cardUseCompatPadding="false"
+        android:layout_width="170dp"
+        android:layout_height="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/tvMonthTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@drawable/shape_stroke_month_item"
+            android:gravity="center"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="20dp"
             android:text="January"
             android:textColor="@color/on_primary"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
 
-    </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

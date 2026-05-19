@@ -26,11 +26,18 @@
     <!-- settings -->
     <string name="text_settings">Settings</string>
 
-    <string name="settings_question_daily_rate">Daily rate:</string>
-    <string name="settings_question_first_weekday">First day of week:</string>
-    <string name="settings_choose_monday">Monday</string>
-    <string name="settings_choose_sunday">Sunday</string>
-    <string name="settings_question_currency">Currency:</string>
+    <string name="settings_daily_rate">Daily rate</string>
+    <string name="settings_daily_rate_hint">100</string>
+    <string name="settings_currency">Currency</string>
+    <string name="settings_currency_hint">$</string>
+    <string name="settings_first_weekday">First day of week</string>
+    <string name="settings_monday">Monday</string>
+    <string name="settings_sunday">Sunday</string>
+    <string name="settings_remind_to_log_day">Remind to log day</string>
+    <string name="settings_desc_remind_to_log_day">Reminds you if today’s status is not set</string>
+
+    <string name="on">ON</string>
+    <string name="off">OFF</string>
 
 
     <!-- dialog edit day cell -->
@@ -51,11 +58,29 @@
 
     <string name="dialog_confirm">Confirm</string>
 
+    <!-- view today status -->
+    <string name="view_tap_to_set">Tap to set</string>
+    <string name="view_no_info">• no info</string>
+
+    <string name="view_worked">Worked • </string>
+    <string name="view_bonus">Bonus • %1$d %2$s</string>
+    <string name="view_no_note">No note</string>
+    <string name="view_earned">Earned: %1$d %2$s</string>
+
+    <!-- dialog choose month -->
+
 
     <!-- descriptions for image buttons -->
     <string name="description_btn_settings">Open settings</string>
     <string name="description_btn_edit_days">Edit working days</string>
     <string name="description_icon_note">View or edit note</string>
     <string name="description_btn_copy">Copy list</string>
+    <string name="desc_icon_tap">Set today info</string>
+    <string name="desc_previous_year">Go to previous year</string>
+    <string name="desc_next_year">Go to next year</string>
+
+    <!-- notification -->
+    <string name="notif_title">Log your day</string>
+    <string name="notif_desc">Today\'s status is not set</string>
 
 </resources>

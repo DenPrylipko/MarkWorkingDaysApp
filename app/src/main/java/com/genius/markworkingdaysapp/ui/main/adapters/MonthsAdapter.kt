@@ -1,8 +1,12 @@
 package com.genius.markworkingdaysapp.ui.main.adapters
 
+import android.graphics.drawable.GradientDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.genius.markworkingdaysapp.R
 import com.genius.markworkingdaysapp.databinding.ItemMonthBinding
@@ -10,12 +14,20 @@ import com.genius.markworkingdaysapp.ui.main.models.MonthItem
 import com.genius.markworkingdaysapp.ui.main.models.MonthStatus
 
 class MonthsAdapter(
-    private var items: List<MonthItem>,
     private val onClick: (MonthItem) -> Unit
-) : RecyclerView.Adapter<MonthsAdapter.MonthsViewHolder>() {
+) : ListAdapter<MonthItem, MonthsAdapter.MonthsViewHolder>(DiffCallback) {
+
+    object DiffCallback : DiffUtil.ItemCallback<MonthItem>() {
+        override fun areItemsTheSame(oldItem: MonthItem, newItem: MonthItem): Boolean =
+            oldItem.yearMonth == newItem.yearMonth
+
+            override fun areContentsTheSame(oldItem: MonthItem, newItem: MonthItem): Boolean =
+                oldItem == newItem
+    }
 
     class MonthsViewHolder(val binding: ItemMonthBinding) :
         RecyclerView.ViewHolder(binding.root)
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -31,34 +43,41 @@ class MonthsAdapter(
     }
 
     override fun onBindViewHolder(holder: MonthsViewHolder, position: Int) {
-        val element = items[position]
+        val element = getItem(position)
+        setMonthCardFor(holder, element)
+    }
+
+    private fun setMonthCardFor(holder: MonthsViewHolder, element: MonthItem) = with(holder.binding) {
 
         with(holder.binding) {
             tvMonthTitle.text = element.title
 
-            monthCard.backgroundTintList = when (element.status) {
-                MonthStatus.PAST -> ContextCompat.getColorStateList(
-                    root.context,
-                    R.color.secondary
-                )
+            when(element.status) {
+                MonthStatus.CURRENT -> {
+                    tvMonthTitle.background = ContextCompat.getDrawable(root.context, R.drawable.shape_stroke_month_item_current)
+                    monthCard.alpha = 1f
+                }
+                MonthStatus.PAST_NOT_WORKED -> {
+                    tvMonthTitle.background = ContextCompat.getDrawable(root.context, R.drawable.shape_stroke_month_item_past_not_worked)
+                    monthCard.alpha = 1f
+                }
 
-                MonthStatus.CURRENT -> ContextCompat.getColorStateList(
-                    root.context,
-                    R.color.primary
-                )
+                MonthStatus.PAST_WORKED -> {
+                    tvMonthTitle.background = ContextCompat.getDrawable(root.context, R.drawable.shape_stroke_month_item_past_worked)
+                    monthCard.alpha = 1f
+                }
 
-                MonthStatus.FUTURE -> ContextCompat.getColorStateList(
-                    root.context,
-                    R.color.month_day_stroke_default
-                )
+                MonthStatus.FUTURE -> {
+                    tvMonthTitle.background = ContextCompat.getDrawable(root.context, R.drawable.shape_stroke_month_item_future)
+                    monthCard.alpha = 0.7f
+                }
             }
 
             monthCard.setOnClickListener {
-                if (element.status == MonthStatus.FUTURE) return@setOnClickListener
-                onClick(element)
+                if (element.status != MonthStatus.FUTURE) {
+                    onClick(element)
+                }
             }
         }
     }
-
-    override fun getItemCount(): Int = items.size
 }
