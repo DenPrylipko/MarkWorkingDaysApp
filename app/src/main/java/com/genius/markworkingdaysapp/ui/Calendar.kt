@@ -56,7 +56,7 @@ private fun MonthCalendar(
 
         MonthHeader(
             monthTitle = "July 2026",
-            onClick = onMonthHeaderClick
+            onClick = {}
         )
 
         Surface(
