@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="working_days">
+        <item quantity="one">%d рабочий день</item>
+        <item quantity="few">%d рабочих дня</item>
+        <item quantity="many">%d рабочих дней</item>
+        <item quantity="other">%d рабочих дней</item>
+    </plurals>
+
+</resources>

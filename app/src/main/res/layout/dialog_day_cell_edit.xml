@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/layoutDayTypeChose"
         app:layout_constraintBottom_toBottomOf="@id/layoutDayTypeChose">
@@ -23,19 +23,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="17"
-            android:textColor="@color/primary"
+            android:textColor="@color/accent_blue"
             android:textSize="55sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvTodayLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/dialog_today"
-            android:textStyle="bold"
-            android:textColor="@color/secondary_text"
-            android:textSize="15sp" />
 
     </LinearLayout>
 
@@ -71,7 +61,7 @@
                 android:paddingHorizontal="28dp"
                 android:paddingVertical="4dp"
                 android:text="@string/dialog_full_day"
-                android:textColor="@color/dialog_text" />
+                android:textColor="@color/text_bright" />
 
         </LinearLayout>
 
@@ -96,7 +86,7 @@
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="4dp"
                 android:text="@string/dialog_short_day"
-                android:textColor="@color/dialog_text" />
+                android:textColor="@color/text_bright" />
 
         </LinearLayout>
 
@@ -120,7 +110,7 @@
                 android:paddingHorizontal="22dp"
                 android:paddingVertical="4dp"
                 android:text="@string/dialog_not_worked"
-                android:textColor="@color/dialog_text" />
+                android:textColor="@color/text_bright" />
 
         </LinearLayout>
 
@@ -146,10 +136,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/shape_bg_label"
-            android:backgroundTint="@color/surface"
+            android:backgroundTint="@color/bg_setup_box"
             android:orientation="vertical"
             android:visibility="visible"
-            android:paddingBottom="15dp">
+            android:paddingBottom="20dp">
 
             <TextView
                 android:id="@+id/tvBonusEarned"
@@ -174,7 +164,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/dialog_optional"
-                android:textColor="@color/secondary_text"
+                android:textColor="@color/text_muted"
+                android:textStyle="bold"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -186,10 +177,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/shape_bg_label"
-                android:backgroundTint="@color/bg_edit_text"
+                android:backgroundTint="@color/edit_text_bg"
                 android:gravity="center"
                 android:hint="@string/dialog_enter_amount"
                 android:paddingHorizontal="22dp"
+                android:textColor="@color/text_primary"
                 android:paddingVertical="7dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -205,17 +197,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingVertical="30dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="30dp"
             android:layout_gravity="center"
             android:visibility="gone"
-            android:background="@color/surface_main">
+            android:background="@color/bg_edit_day">
 
             <ImageView
                 android:id="@+id/ivDayOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_cloudy_night"
-                app:tint="@color/not_worked"
+                app:tint="@color/not_worked_variant"
                 android:layout_gravity="center"/>
 
 
@@ -223,8 +216,8 @@
                 android:id="@+id/tvDayOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/not_worked"
-                android:textSize="22sp"
+                android:textColor="@color/not_worked_variant"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:text="@string/dialog_day_off"/>
@@ -240,9 +233,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:background="@drawable/shape_bg_label"
-        android:backgroundTint="@color/surface"
+        android:backgroundTint="@color/bg_setup_box"
         android:orientation="vertical"
-        android:paddingBottom="15dp"
+        android:paddingBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/tvBtnConfirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -252,12 +245,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="10dp"
             android:drawableStart="@drawable/ic_edit"
             android:drawablePadding="10dp"
-            android:drawableTint="@color/note"
+            android:drawableTint="@color/text_muted"
             android:text="@string/dialog_note"
-            android:textColor="@color/note"
+            android:textColor="@color/text_muted"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -269,7 +262,7 @@
             android:layout_marginHorizontal="25dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/shape_bg_label"
-            android:backgroundTint="@color/bg_edit_text"
+            android:backgroundTint="@color/edit_text_bg"
             android:gravity="center"
             android:hint="@string/dialog_add_a_note"
             android:paddingVertical="7dp"
@@ -284,14 +277,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_bg_label"
-        android:backgroundTint="@color/primary"
+        android:backgroundTint="@color/accent_blue"
         android:drawableStart="@drawable/ic_done_all"
+        android:drawableTint="@color/text_bright"
         android:paddingHorizontal="25dp"
         android:paddingVertical="5dp"
         android:gravity="center"
         android:drawablePadding="7dp"
         android:text="@string/dialog_confirm"
-        android:textColor="@color/dialog_text"
+        android:textColor="@color/text_bright"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

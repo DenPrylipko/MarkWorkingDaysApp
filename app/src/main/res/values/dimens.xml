@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="stroke_month_item">4dp</dimen>
+    <dimen name="stroke_month_item">3dp</dimen>
 
     <dimen name="day_cell_stroke_width_default">3dp</dimen>
-    <dimen name="day_cell_stroke_width_today">5dp</dimen>
+    <dimen name="day_cell_stroke_width_today">4dp</dimen>
 
     <dimen name="day_cell_text_size_default">16sp</dimen>
     <dimen name="day_cell_text_size_today">22sp</dimen>

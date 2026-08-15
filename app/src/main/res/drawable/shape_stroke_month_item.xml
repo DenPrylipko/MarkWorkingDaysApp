@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <solid android:color="@color/solid_month_card_current_month"/>
+    <solid android:color="@color/bg_calendar"/>
     <corners android:radius="40dp"/>
-    <stroke android:width="2dp" android:color="@color/stroke_month_card"/>
+    <stroke android:width="2dp" android:color="@color/accent_gray"/>
 
 </shape>

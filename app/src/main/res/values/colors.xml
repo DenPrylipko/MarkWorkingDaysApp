@@ -1,64 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- main colors -->
-    <color name="primary">#97C6F0</color>
-    <color name="primary_stroke">#4E6374</color>
-    <color name="on_primary">#FFFFFF</color>
-    <color name="secondary">#68B9FF</color>
-    <color name="on_secondary">#FFFFFF</color>
+    <!-- Backgrounds -->
+    <color name="bg">#EBEBEB</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#FFFFFF</color>
 
-    <color name="background">#FFFFFF</color>
-    <color name="on_background">#666666</color>
-    <color name="surface_main">#030303</color>
-    <color name="surface">#0D0D0D</color>
-    <color name="on_surface">#383838</color>
+    <color name="bg_calendar">@color/surface</color>
+    <color name="bg_edit_day">@color/bg</color>
+    <color name="bg_settings">@color/bg</color>
+    <color name="bg_setup_box">@color/surface_variant</color>
 
-    <!-- month choose colors -->
-    <color name="current_month">@color/primary</color>
-    <color name="past_month">#44A0A8</color>
-    <color name="future_month">#4D4D4D</color>
-    <color name="stroke_month_card">#FFFFFF</color>
+    <!-- Text -->
+    <color name="text_primary">#434343</color>
+    <color name="text_secondary">#434343</color>
+    <color name="text_bright">#FFFFFF</color>
+    <color name="text_bright_variant">#FFFFFF</color>
+    <color name="text_muted">#707070</color>
 
-    <color name="solid_month_card_current_month">@color/primary</color>
-    <color name="solid_month_card_past_month_worked">#97D687</color>
-    <color name="solid_month_card_past_month_not_worked">#4D4D4D</color>
-    <color name="solid_month_card_future_month">#4D4D4D</color>
+    <!-- Accent -->
+    <color name="accent_blue">#45B5DB</color>
+    <color name="accent_green">#4DC761</color>
+    <color name="accent_orange">#FF9800</color>
+    <color name="accent_gray">#7D7D7D</color>
+    <color name="accent_gray_variant">#7D7D7D</color>
 
+    <!-- States -->
+    <color name="full_day">@color/accent_green</color>
+    <color name="short_day">@color/accent_orange</color>
+    <color name="not_worked">@color/accent_gray</color>
+    <color name="not_worked_variant">#AAAAAA</color>
 
-    <!-- dialog day colors -->
-    <color name="dialog_text">#FFFFFF</color>
-    <color name="full_day">#97D687</color>
-    <color name="short_day">#FF9800</color>
-    <color name="not_worked">#535353</color>
-    <color name="note">#B4B4B4</color>
-    <color name="bg_edit_text">#3E3E3E</color>
-    <color name="secondary_text">#828282</color>
-    <color name="dialog_surface">#21351D</color>
+    <!-- Calendar -->
+    <color name="calendar_default">@color/accent_gray</color>
+    <color name="calendar_future">@color/accent_gray</color>
+    <color name="calendar_today">@color/accent_blue</color>
 
+    <!-- Inputs -->
+    <color name="edit_text_bg">#DDDDDD</color>
 
-    <color name="view_text">#B4B4B4</color>
-    <color name="view_earned_bg">#535353</color>
-
-
-    <!-- other colors -->
-    <color name="working">#5C8F4F</color>
-
-    <color name="month_day_stroke_default">#B5B5B5</color>
-    <color name="month_day_stroke_worked">#97D687</color>
-    <color name="month_day_stroke_short_day">#FF9800</color>
-    <color name="month_day_stroke_today">#6E6E6E</color>
-
-    <color name="month_day_text_default">#A0A0A0</color>
-    <color name="month_day_text_worked">#5C8F4F</color>
-    <color name="month_day_text_short_day">#FF9800</color>
-    <color name="month_day_text_today">#6E6E6E</color>
-
-    <color name="month_day_icon_note">#000000</color>
-    <color name="month_day_text_bonus">#000000</color>
-
-    <color name="weekday_text_default">#000000</color>
-    <color name="error">#FF5252</color>
-
-    <!-- scrim -->
-    <color name="scrim">#99000000</color>
+    <!-- Overlay -->
+    <color name="scrim">#CC000000</color>
 </resources>

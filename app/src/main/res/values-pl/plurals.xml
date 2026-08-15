@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="working_days">
+        <item quantity="one">%d dzień roboczy</item>
+        <item quantity="few">%d dni robocze</item>
+        <item quantity="many">%d dni roboczych</item>
+        <item quantity="other">%d dnia roboczego</item>
+    </plurals>
+
+</resources>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Облік Робочих Днів</string>
+
+    <!-- defaults -->
+    <string name="default_current_date">17. Липня 07</string>
+    <string name="default_item_day_date">01.01</string>
+    <string name="default_bonus_item_day">+100</string>
+    <string name="default_current_year">2026</string>
+
+    <!-- main screen -->
+    <string name="text_daily_rate">Ставка: %1$d %2$s</string>
+
+    <string name="text_edit_days">Редагувати</string>
+    <string name="text_copy_days">Копіювати</string>
+
+    <string name="text_question_worked_today">Працювали сьогодні?</string>
+    <string name="text_yes">Так</string>
+    <string name="text_no">Ні</string>
+
+    <string name="text_working_days">%1$d робочих днів</string>
+    <string name="text_total_bonuses">Усього бонусів: %1$d %2$s</string>
+    <string name="text_total_earned">Усього зароблено: %1$d %2$s</string>
+
+    <!-- settings -->
+    <string name="text_settings">Налаштування</string>
+
+    <string name="settings_daily_rate">Ставка</string>
+    <string name="settings_daily_rate_hint">100</string>
+    <string name="settings_currency">Валюта</string>
+    <string name="settings_currency_hint">$</string>
+    <string name="settings_first_weekday">Перший день тижня</string>
+    <string name="settings_monday">Пн</string>
+    <string name="settings_sunday">Нд</string>
+    <string name="settings_remind_to_log_day">Нагадувати про запис дня</string>
+    <string name="settings_desc_remind_to_log_day">Нагадує, якщо статус дня не встановлено</string>
+
+    <string name="on">УВІМК</string>
+    <string name="off">ВИМК</string>
+
+    <!-- dialog edit day cell -->
+    <string name="dialog_today">Сьогодні</string>
+
+    <string name="dialog_full_day">Повний день</string>
+    <string name="dialog_short_day">Короткий день</string>
+    <string name="dialog_not_worked">Вихідний</string>
+
+    <string name="dialog_bonus">Бонус</string>
+    <string name="dialog_earned">Зароблено*</string>
+    <string name="dialog_note">Нотатка</string>
+
+    <string name="dialog_optional">Необов’язково</string>
+    <string name="dialog_enter_amount">Введіть суму</string>
+    <string name="dialog_add_a_note">Додайте нотатку</string>
+    <string name="dialog_day_off">Відпочиваємо</string>
+
+    <string name="dialog_confirm">Підтвердити</string>
+
+    <!-- view today status -->
+    <string name="view_tap_to_set">Натисніть, щоб встановити</string>
+    <string name="view_no_info">• немає даних</string>
+
+    <string name="view_worked">Праця • </string>
+    <string name="view_bonus">Бонус • %1$d %2$s</string>
+    <string name="view_no_note">Без нотатки</string>
+    <string name="view_earned">Зароблено: %1$d %2$s</string>
+
+    <!-- dialog choose month -->
+    <string name="dialog_chose_month_current">Поточний</string>
+
+    <!-- descriptions for image buttons -->
+    <string name="description_btn_settings">Відкрити налаштування</string>
+    <string name="description_btn_edit_days">Редагувати робочі дні</string>
+    <string name="description_icon_note">Переглянути або змінити нотатку</string>
+    <string name="description_btn_copy">Копіювати список</string>
+    <string name="desc_icon_tap">Встановити інформацію про сьогодні</string>
+    <string name="desc_previous_year">Перейти до попереднього року</string>
+    <string name="desc_next_year">Перейти до наступного року</string>
+
+    <!-- notification -->
+    <string name="notif_title">Запишіть свій день</string>
+    <string name="notif_desc">Статус сьогоднішнього дня не встановлено</string>
+
+    <!-- toasts -->
+    <string name="toast_cant_edit_day">Не можна змінити цей день</string>
+    <string name="toast_no_working_days">У цьому місяці немає робочих днів</string>
+
+</resources>

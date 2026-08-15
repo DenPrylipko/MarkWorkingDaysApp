@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+
+
+                    <!-- .......... v 2.0 .......... -->
+    <string name="version_format" translatable="false">v%1$s</string>
+
+
+    <!-- status -->
+    <string name="status_full_day">Full day</string>
+    <string name="status_short_day">Short day</string>
+    <string name="status_not_worked">Not worked</string>
+
+    <!-- account_header -->
+    <string name="account_header_log_in">Log in</string>
+    <string name="account_header_log_out">Log out</string>
+
+    <string name="account_header_syncing">Syncing…</string>
+    <string name="account_header_synced">Synced</string>
+
+
+                    <!-- content_description -->
+    <!-- button -->
+    <string name="button_navigation_menu_content_description">Open navigation menu</string>
+    <string name="button_more_options_content_description">More options</string>
+    <string name="button_previous_year_content_description">Go to previous year</string>
+    <string name="button_next_year_content_description">Go to next year</string>
+
+    <!-- day_card -->
+    <string name="day_card_default_content_description">%1$s. %2$s. Earned: %3$s</string>
+    <string name="day_card_bonus_content_description">Bonus: %1$s</string>
+    <string name="day_card_note_content_description">Note: %1$s</string>
+    <string name="day_card_no_info_content_description">%1$s. No information has been entered</string>
+
+    <!-- statistics_chart -->
+    <string name="statistics_chart_content_description">Income chart from %1$s to %2$s</string>
+    <string name="statistics_chart_month_value_content_description">%1$s. Income: %2$s</string>
+    <string name="statistics_chart_week_value_content_description">%1$s to %2$s. Income: %3$s</string>
+    <string name="statistics_chart_no_data_content_description">No income data from %1$s to %2$s</string>
+
+
+                    <!-- Calendar -->
+    <string name="calendar_title">Calendar</string>
+
+    <!-- month_statistics -->
+    <string name="month_statistics_working_days">Working days</string>
+    <string name="month_statistics_bonuses">Bonuses</string>
+    <string name="month_statistics_total_earned">Total earned</string>
+
+    <!-- day_card -->
+    <string name="day_card_no_info">No info</string>
+    <string name="day_card_tap_to_set">Tap to set</string>
+
+    <string name="day_card_worked">Worked</string>
+    <string name="day_card_bonus">Bonus</string>
+    <string name="day_card_note">Note</string>
+    <string name="day_card_no_note">No note</string>
+    <string name="day_card_today_earned_label">Today:</string>
+
+    <!-- edit_day -->
+    <string name="edit_day_bonus">Bonus</string>
+    <string name="edit_day_bonus_optional">Optional</string>
+
+    <string name="edit_day_earned">Earned</string>
+    <string name="edit_day_earned_required">Required</string>
+
+    <string name="edit_day_day_off">Day off</string>
+
+    <string name="edit_day_note">Note</string>
+
+    <string name="edit_day_action_save">Confirm</string>
+
+    <!-- change_rate -->
+    <string name="change_rate_icon_label">Change rate</string>
+
+    <string name="change_rate_title">Change daily rate</string>
+    <string name="change_rate_description">Earnings for all full working days in %1$s will be recalculated.</string>
+
+    <string name="change_rate_action_save">Save</string>
+
+    <!-- share -->
+    <string name="share_icon_label">Share</string>
+
+    <string name="share_title">Share as</string>
+
+    <string name="share_image_label">Image</string>
+    <string name="share_text_label">Text</string>
+    <string name="share_image_and_text_label">Image and text</string>
+
+
+                    <!-- Statistics -->
+    <string name="statistics_title">Statistics</string>
+
+    <string name="statistics_last_month_on_chart_title">Last month on the chart</string>
+
+    <string name="statistics_highest">Highest</string>
+    <string name="statistics_average">Average</string>
+    <string name="statistics_lowest">Lowest</string>
+    <string name="statistics_total_income">Total income</string>
+
+    <!-- period_selector -->
+    <string name="period_selector_3_months">3 months</string>
+    <string name="period_selector_6_months">6 months</string>
+    <string name="period_selector_1_year">1 year</string>
+
+
+                    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+
+    <!-- settings_group -->
+    <string name="settings_group_general">General</string>
+    <string name="settings_group_calendar">Calendar</string>
+    <string name="settings_group_notifications">Notifications</string>
+
+    <!-- settings_element -->
+    <string name="settings_element_daily_rate">Daily rate</string>
+
+    <string name="settings_element_currency">Currency</string>
+
+    <string name="settings_element_first_day_of_week">First day of week</string>
+    <string name="settings_element_first_day_of_week_sunday">Sunday</string>
+    <string name="settings_element_first_day_of_week_monday">Monday</string>
+
+
+    <string name="settings_element_remind_to_log_day">Remind to log day</string>
+    <string name="settings_element_remind_to_log_day_description">Reminds you if today\'s status is not set</string>
+
+    <!-- reminder_time -->
+    <string name="reminder_time_title">Reminder time</string>
+    <string name="reminder_time_action_save">Save</string>
+
+
+                    <!-- notification -->
+    <string name="notification_title">Log your day</string>
+    <string name="notification_description">Today\'s status is not set</string>
+
+</resources>

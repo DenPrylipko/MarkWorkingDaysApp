@@ -1,7 +1,6 @@
 package com.genius.markworkingdaysapp.data.db
 
-import androidx.compose.runtime.tooling.LocalInspectionTables
-import com.genius.markworkingdaysapp.ui.main.models.DayType
+import com.genius.markworkingdaysapp.model.DayType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
@@ -20,10 +19,8 @@ class WorkDayRepository(private val dao: WorkDayDao) {
         )
     }
 
-    fun observeYearDays(year: Int) : Flow<List<WorkDayEntity>> {
-        val start = LocalDate.of(year, 1, 1).toEpochDay()
-        val end = LocalDate.of(year, 12, 31).toEpochDay()
-        return dao.observeRange(start, end)
+    suspend fun isDayChecked(date: LocalDate): Boolean {
+        return dao.getByDay(date.toEpochDay()) != null
     }
 
     fun observeRangeMap(from: LocalDate, to: LocalDate): Flow<Map<Long, WorkDayEntity>> =

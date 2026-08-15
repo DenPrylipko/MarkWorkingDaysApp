@@ -2,8 +2,8 @@
 <resources>
 
     <style name="mainTextStyle" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/primary</item>
-        <item name="android:shadowColor">@color/on_primary</item>
+        <item name="android:textColor">@color/accent_blue</item>
+        <item name="android:shadowColor">@color/text_primary</item>
         <item name="android:shadowRadius">6</item>
         <item name="android:shadowDx">0</item>
         <item name="android:shadowDy">0</item>
@@ -14,6 +14,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@color/text_secondary</item>
     </style>
 
     <style name="mainButtons" parent="TextAppearance.AppCompat">
@@ -24,7 +25,7 @@
     <style name="settingsParameters" parent="TextAppearance.AppCompat">
         <item name="android:textSize">25sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/view_text</item>
+        <item name="android:textColor">@color/text_secondary</item>
     </style>
 
     <!-- dialog edit day (chooseType) -->

@@ -8,7 +8,7 @@ import android.icu.util.Calendar
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
-import com.genius.markworkingdaysapp.ui.main.ReminderReceiver
+import com.genius.markworkingdaysapp.ui.xml.main.ReminderReceiver
 import kotlin.time.Duration.Companion.minutes
 
 class ReminderScheduler(private val context: Context) {

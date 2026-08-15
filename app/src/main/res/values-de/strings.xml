@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Arbeitstage erfassen</string>
+
+    <!-- defaults -->
+    <string name="default_current_date">17. Juli 07</string>
+    <string name="default_item_day_date">01.01</string>
+    <string name="default_bonus_item_day">+100</string>
+    <string name="default_current_year">2026</string>
+
+    <!-- main screen -->
+    <string name="text_daily_rate">Tagessatz: %1$d %2$s</string>
+
+    <string name="text_edit_days">Bearbeiten</string>
+    <string name="text_copy_days">Kopieren</string>
+
+    <string name="text_question_worked_today">Heute gearbeitet?</string>
+    <string name="text_yes">Ja</string>
+    <string name="text_no">Nein</string>
+
+    <string name="text_working_days">%1$d Arbeitstage</string>
+    <string name="text_total_bonuses">Gesamtbonus: %1$d %2$s</string>
+    <string name="text_total_earned">Gesamtverdienst: %1$d %2$s</string>
+
+    <!-- settings -->
+    <string name="text_settings">Einstellungen</string>
+
+    <string name="settings_daily_rate">Tagessatz</string>
+    <string name="settings_daily_rate_hint">100</string>
+    <string name="settings_currency">Währung</string>
+    <string name="settings_currency_hint">€</string>
+    <string name="settings_first_weekday">Erster Wochentag</string>
+    <string name="settings_monday">Mo</string>
+    <string name="settings_sunday">So</string>
+    <string name="settings_remind_to_log_day">An Arbeitstag erinnern</string>
+    <string name="settings_desc_remind_to_log_day">Erinnert dich, wenn der heutige Status nicht gesetzt wurde</string>
+
+    <string name="on">EIN</string>
+    <string name="off">AUS</string>
+
+    <!-- dialog edit day cell -->
+    <string name="dialog_today">Heute</string>
+
+    <string name="dialog_full_day">Ganzer Tag</string>
+    <string name="dialog_short_day">Kurzer Tag</string>
+    <string name="dialog_not_worked">Nicht gearbeitet</string>
+
+    <string name="dialog_bonus">Bonus</string>
+    <string name="dialog_earned">Verdienst*</string>
+    <string name="dialog_note">Notiz</string>
+
+    <string name="dialog_optional">Optional</string>
+    <string name="dialog_enter_amount">Betrag eingeben</string>
+    <string name="dialog_add_a_note">Notiz hinzufügen</string>
+    <string name="dialog_day_off">Freier Tag</string>
+
+    <string name="dialog_confirm">Bestätigen</string>
+
+    <!-- view today status -->
+    <string name="view_tap_to_set">Tippen zum Festlegen</string>
+    <string name="view_no_info">• keine Info</string>
+
+    <string name="view_worked">Gearbeitet • </string>
+    <string name="view_bonus">Bonus • %1$d %2$s</string>
+    <string name="view_no_note">Keine Notiz</string>
+    <string name="view_earned">Verdienst: %1$d %2$s</string>
+
+    <!-- dialog choose month -->
+    <string name="dialog_chose_month_current">Aktuell</string>
+
+    <!-- descriptions for image buttons -->
+    <string name="description_btn_settings">Einstellungen öffnen</string>
+    <string name="description_btn_edit_days">Arbeitstage bearbeiten</string>
+    <string name="description_icon_note">Notiz anzeigen oder bearbeiten</string>
+    <string name="description_btn_copy">Liste kopieren</string>
+    <string name="desc_icon_tap">Heutige Informationen festlegen</string>
+    <string name="desc_previous_year">Zum vorherigen Jahr wechseln</string>
+    <string name="desc_next_year">Zum nächsten Jahr wechseln</string>
+
+    <!-- notification -->
+    <string name="notif_title">Tag erfassen</string>
+    <string name="notif_desc">Der heutige Status wurde noch nicht gesetzt</string>
+
+    <!-- toasts -->
+    <string name="toast_cant_edit_day">Dieser Tag kann nicht bearbeitet werden</string>
+    <string name="toast_no_working_days">In diesem Monat gibt es keine Arbeitstage</string>
+
+</resources>

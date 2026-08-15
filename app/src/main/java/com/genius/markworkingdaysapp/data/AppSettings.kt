@@ -66,9 +66,9 @@ class AppSettings(context: Context) {
         private const val KEY_REMINDER_MINUTE = "reminder_minute"
         private const val KEY_TODAY_CHECKED = "today_checked"
 
-        private const val DEFAULT_DAILY_RATE = 450
+        private const val DEFAULT_DAILY_RATE = 100
         private const val DEFAULT_FIRST_DAY_ID = 1 // MONDAY
-        private const val DEFAULT_CURRENCY = ""
+        private const val DEFAULT_CURRENCY = "$"
         private const val DEFAULT_NOTIFICATIONS_ENABLED = false
         private const val DEFAULT_REMINDER_HOUR = 20
         private const val DEFAULT_REMINDER_MINUTE = 0

@@ -10,7 +10,7 @@
         android:id="@+id/layoutMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
+        android:background="@color/bg"
         android:paddingHorizontal="30dp">
 
         <!-- layoutTopBar -->
@@ -27,7 +27,7 @@
                 android:id="@+id/imgBtnSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/background"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/description_btn_settings"
                 android:src="@drawable/ic_settings"
                 app:layout_constraintStart_toStartOf="parent"
@@ -91,7 +91,7 @@
         </LinearLayout>
 
         <!-- today status view -->
-        <com.genius.markworkingdaysapp.ui.main.TodayStatusView
+        <com.genius.markworkingdaysapp.ui.xml.main.TodayStatusView
             android:id="@+id/layoutDayCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -133,8 +133,9 @@
                 android:background="@drawable/shape_stroke_month_choose"
                 android:paddingHorizontal="40dp"
                 android:paddingVertical="10dp"
+                android:textStyle="bold"
                 android:text="January"
-                android:textColor="@color/on_primary"
+                android:textColor="@color/accent_blue"
                 android:textSize="35sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -183,10 +184,10 @@
         android:layout_width="320dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/surface_main"
+        android:background="@color/bg_settings"
         android:padding="16dp">
 
-<com.genius.markworkingdaysapp.ui.main.SettingsDrawerView
+<com.genius.markworkingdaysapp.ui.xml.main.SettingsDrawerView
     android:id="@+id/settingsDrawerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>

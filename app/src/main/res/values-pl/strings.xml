@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ewidencja Dni Pracy</string>
+
+    <!-- defaults -->
+    <string name="default_current_date">17. Lipca 07</string>
+    <string name="default_item_day_date">01.01</string>
+    <string name="default_bonus_item_day">+100</string>
+    <string name="default_current_year">2026</string>
+
+    <!-- main screen -->
+    <string name="text_daily_rate">Stawka dzienna: %1$d %2$s</string>
+
+    <string name="text_edit_days">Edytuj</string>
+    <string name="text_copy_days">Kopiuj</string>
+
+    <string name="text_question_worked_today">Pracowałeś dziś?</string>
+    <string name="text_yes">Tak</string>
+    <string name="text_no">Nie</string>
+
+    <string name="text_working_days">%1$d dni roboczych</string>
+    <string name="text_total_bonuses">Łączne premie: %1$d %2$s</string>
+    <string name="text_total_earned">Łączny zarobek: %1$d %2$s</string>
+
+    <!-- settings -->
+    <string name="text_settings">Ustawienia</string>
+
+    <string name="settings_daily_rate">Stawka dzienna</string>
+    <string name="settings_daily_rate_hint">100</string>
+    <string name="settings_currency">Waluta</string>
+    <string name="settings_currency_hint">zł</string>
+    <string name="settings_first_weekday">Pierwszy dzień tygodnia</string>
+    <string name="settings_monday">Pon</string>
+    <string name="settings_sunday">Nie</string>
+    <string name="settings_remind_to_log_day">Przypomnienie o wpisaniu dnia</string>
+    <string name="settings_desc_remind_to_log_day">Przypomina, jeśli status dzisiejszego dnia nie został ustawiony</string>
+
+    <string name="on">WŁ.</string>
+    <string name="off">WYŁ.</string>
+
+    <!-- dialog edit day cell -->
+    <string name="dialog_today">Dzisiaj</string>
+
+    <string name="dialog_full_day">Pełny dzień</string>
+    <string name="dialog_short_day">Krótki dzień</string>
+    <string name="dialog_not_worked">Nie pracowałem</string>
+
+    <string name="dialog_bonus">Premia</string>
+    <string name="dialog_earned">Zarobek*</string>
+    <string name="dialog_note">Notatka</string>
+
+    <string name="dialog_optional">Opcjonalnie</string>
+    <string name="dialog_enter_amount">Wpisz kwotę</string>
+    <string name="dialog_add_a_note">Dodaj notatkę</string>
+    <string name="dialog_day_off">Dzień wolny</string>
+
+    <string name="dialog_confirm">Potwierdź</string>
+
+    <!-- view today status -->
+    <string name="view_tap_to_set">Dotknij, aby ustawić</string>
+    <string name="view_no_info">• brak informacji</string>
+
+    <string name="view_worked">Pracowałem • </string>
+    <string name="view_bonus">Premia • %1$d %2$s</string>
+    <string name="view_no_note">Brak notatki</string>
+    <string name="view_earned">Zarobek: %1$d %2$s</string>
+
+    <!-- dialog choose month -->
+    <string name="dialog_chose_month_current">Bieżący</string>
+
+    <!-- descriptions for image buttons -->
+    <string name="description_btn_settings">Otwórz ustawienia</string>
+    <string name="description_btn_edit_days">Edytuj dni pracy</string>
+    <string name="description_icon_note">Wyświetl lub edytuj notatkę</string>
+    <string name="description_btn_copy">Kopiuj listę</string>
+    <string name="desc_icon_tap">Ustaw informacje o dzisiejszym dniu</string>
+    <string name="desc_previous_year">Przejdź do poprzedniego roku</string>
+    <string name="desc_next_year">Przejdź do następnego roku</string>
+
+    <!-- notification -->
+    <string name="notif_title">Zapisz swój dzień</string>
+    <string name="notif_desc">Status dzisiejszego dnia nie został ustawiony</string>
+
+    <!-- toasts -->
+    <string name="toast_cant_edit_day">Nie można edytować tego dnia</string>
+    <string name="toast_no_working_days">W tym miesiącu nie ma dni roboczych</string>
+
+</resources>

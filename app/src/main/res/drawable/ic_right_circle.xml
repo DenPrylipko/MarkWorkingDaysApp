@@ -2,11 +2,12 @@
     android:width="50dp"
     android:height="50dp"
     android:viewportWidth="50"
-    android:viewportHeight="50">
+    android:viewportHeight="50"
+    android:autoMirrored="true">
   <path
       android:pathData="M25,0L25,0A25,25 0,0 0,0 25L0,25A25,25 0,0 0,25 50L25,50A25,25 0,0 0,50 25L50,25A25,25 0,0 0,25 0z"
-      android:fillColor="@color/primary"/>
+      android:fillColor="@color/accent_blue"/>
   <path
       android:pathData="M20.784,40L37,25L20.784,10L17,13.5L29.432,25L17,36.5L20.784,40Z"
-      android:fillColor="@color/surface_main"/>
+      android:fillColor="@color/bg"/>
 </vector>

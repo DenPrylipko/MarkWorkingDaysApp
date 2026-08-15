@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">מעקב ימי עבודה</string>
+
+    <!-- defaults -->
+    <string name="default_current_date">17. יולי 07</string>
+    <string name="default_item_day_date">01.01</string>
+    <string name="default_bonus_item_day">+100</string>
+    <string name="default_current_year">2026</string>
+
+    <!-- main screen -->
+    <string name="text_daily_rate">שכר יומי: %1$d %2$s</string>
+
+    <string name="text_edit_days">עריכה</string>
+    <string name="text_copy_days">העתק</string>
+
+    <string name="text_question_worked_today">עבדת היום?</string>
+    <string name="text_yes">כן</string>
+    <string name="text_no">לא</string>
+
+    <string name="text_working_days">%1$d ימי עבודה</string>
+    <string name="text_total_bonuses">סך הבונוסים: %1$d %2$s</string>
+    <string name="text_total_earned">סך ההכנסות: %1$d %2$s</string>
+
+    <!-- settings -->
+    <string name="text_settings">הגדרות</string>
+
+    <string name="settings_daily_rate">שכר יומי</string>
+    <string name="settings_daily_rate_hint">100</string>
+    <string name="settings_currency">מטבע</string>
+    <string name="settings_currency_hint">₪</string>
+    <string name="settings_first_weekday">היום הראשון בשבוע</string>
+    <string name="settings_monday">ב׳</string>
+    <string name="settings_sunday">א׳</string>
+    <string name="settings_remind_to_log_day">תזכורת לרישום יום</string>
+    <string name="settings_desc_remind_to_log_day">תזכורת אם סטטוס היום לא הוגדר</string>
+
+    <string name="on">פועל</string>
+    <string name="off">כבוי</string>
+
+    <!-- dialog edit day cell -->
+    <string name="dialog_today">היום</string>
+
+    <string name="dialog_full_day">יום מלא</string>
+    <string name="dialog_short_day">יום קצר</string>
+    <string name="dialog_not_worked">לא עבדתי</string>
+
+    <string name="dialog_bonus">בונוס</string>
+    <string name="dialog_earned">הרווחתי*</string>
+    <string name="dialog_note">הערה</string>
+
+    <string name="dialog_optional">אופציונלי</string>
+    <string name="dialog_enter_amount">הזן סכום</string>
+    <string name="dialog_add_a_note">הוסף הערה</string>
+    <string name="dialog_day_off">יום חופשי</string>
+
+    <string name="dialog_confirm">אישור</string>
+
+    <!-- view today status -->
+    <string name="view_tap_to_set">לחץ כדי להגדיר</string>
+    <string name="view_no_info">• אין מידע</string>
+
+    <string name="view_worked">עבדתי • </string>
+    <string name="view_bonus">בונוס • %1$d %2$s</string>
+    <string name="view_no_note">ללא הערה</string>
+    <string name="view_earned">הרווחתי: %1$d %2$s</string>
+
+    <!-- dialog choose month -->
+    <string name="dialog_chose_month_current">נוכחי</string>
+
+    <!-- descriptions for image buttons -->
+    <string name="description_btn_settings">פתח הגדרות</string>
+    <string name="description_btn_edit_days">ערוך ימי עבודה</string>
+    <string name="description_icon_note">צפה או ערוך הערה</string>
+    <string name="description_btn_copy">העתק רשימה</string>
+    <string name="desc_icon_tap">הגדר מידע להיום</string>
+    <string name="desc_previous_year">עבור לשנה הקודמת</string>
+    <string name="desc_next_year">עבור לשנה הבאה</string>
+
+    <!-- notification -->
+    <string name="notif_title">רשום את היום שלך</string>
+    <string name="notif_desc">סטטוס היום עדיין לא הוגדר</string>
+
+    <!-- toasts -->
+    <string name="toast_cant_edit_day">לא ניתן לערוך את היום הזה</string>
+    <string name="toast_no_working_days">אין ימי עבודה בחודש זה</string>
+
+</resources>

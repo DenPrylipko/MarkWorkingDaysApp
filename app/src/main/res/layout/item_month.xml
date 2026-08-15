@@ -23,7 +23,7 @@
             android:paddingHorizontal="20dp"
             android:paddingVertical="20dp"
             android:text="January"
-            android:textColor="@color/on_primary"
+            android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold" />
 

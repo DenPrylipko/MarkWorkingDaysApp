@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Werkdagen Bijhouden</string>
+
+    <!-- defaults -->
+    <string name="default_current_date">17. Juli 07</string>
+    <string name="default_item_day_date">01.01</string>
+    <string name="default_bonus_item_day">+100</string>
+    <string name="default_current_year">2026</string>
+
+    <!-- main screen -->
+    <string name="text_daily_rate">Dagloon: %1$d %2$s</string>
+
+    <string name="text_edit_days">Bewerken</string>
+    <string name="text_copy_days">Kopiëren</string>
+
+    <string name="text_question_worked_today">Vandaag gewerkt?</string>
+    <string name="text_yes">Ja</string>
+    <string name="text_no">Nee</string>
+
+    <string name="text_working_days">%1$d werkdagen</string>
+    <string name="text_total_bonuses">Totaal bonussen: %1$d %2$s</string>
+    <string name="text_total_earned">Totaal verdiend: %1$d %2$s</string>
+
+    <!-- settings -->
+    <string name="text_settings">Instellingen</string>
+
+    <string name="settings_daily_rate">Dagloon</string>
+    <string name="settings_daily_rate_hint">100</string>
+    <string name="settings_currency">Valuta</string>
+    <string name="settings_currency_hint">€</string>
+    <string name="settings_first_weekday">Eerste dag van de week</string>
+    <string name="settings_monday">Ma</string>
+    <string name="settings_sunday">Zo</string>
+    <string name="settings_remind_to_log_day">Herinner mij om de dag vast te leggen</string>
+    <string name="settings_desc_remind_to_log_day">Herinnert je als de status van vandaag nog niet is ingesteld</string>
+
+    <string name="on">AAN</string>
+    <string name="off">UIT</string>
+
+    <!-- dialog edit day cell -->
+    <string name="dialog_today">Vandaag</string>
+
+    <string name="dialog_full_day">Volledige dag</string>
+    <string name="dialog_short_day">Korte dag</string>
+    <string name="dialog_not_worked">Niet gewerkt</string>
+
+    <string name="dialog_bonus">Bonus</string>
+    <string name="dialog_earned">Verdiend*</string>
+    <string name="dialog_note">Notitie</string>
+
+    <string name="dialog_optional">Optioneel</string>
+    <string name="dialog_enter_amount">Bedrag invoeren</string>
+    <string name="dialog_add_a_note">Voeg een notitie toe</string>
+    <string name="dialog_day_off">Vrije dag</string>
+
+    <string name="dialog_confirm">Bevestigen</string>
+
+    <!-- view today status -->
+    <string name="view_tap_to_set">Tik om in te stellen</string>
+    <string name="view_no_info">• geen informatie</string>
+
+    <string name="view_worked">Gewerkt • </string>
+    <string name="view_bonus">Bonus • %1$d %2$s</string>
+    <string name="view_no_note">Geen notitie</string>
+    <string name="view_earned">Verdiend: %1$d %2$s</string>
+
+    <!-- dialog choose month -->
+    <string name="dialog_chose_month_current">Huidige</string>
+
+    <!-- descriptions for image buttons -->
+    <string name="description_btn_settings">Instellingen openen</string>
+    <string name="description_btn_edit_days">Werkdagen bewerken</string>
+    <string name="description_icon_note">Notitie bekijken of bewerken</string>
+    <string name="description_btn_copy">Lijst kopiëren</string>
+    <string name="desc_icon_tap">Informatie voor vandaag instellen</string>
+    <string name="desc_previous_year">Ga naar vorig jaar</string>
+    <string name="desc_next_year">Ga naar volgend jaar</string>
+
+    <!-- notification -->
+    <string name="notif_title">Registreer je dag</string>
+    <string name="notif_desc">De status van vandaag is nog niet ingesteld</string>
+
+    <!-- toasts -->
+    <string name="toast_cant_edit_day">Deze dag kan niet worden bewerkt</string>
+    <string name="toast_no_working_days">Er zijn geen werkdagen in deze maand</string>
+
+</resources>

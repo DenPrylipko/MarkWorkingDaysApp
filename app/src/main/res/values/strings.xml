@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MarkWorkingDaysApp</string>
+    <string name="app_name">Mark Working Days</string>
 
     <!-- defaults -->
     <string name="default_current_date">17. July 07</string>
@@ -31,8 +31,8 @@
     <string name="settings_currency">Currency</string>
     <string name="settings_currency_hint">$</string>
     <string name="settings_first_weekday">First day of week</string>
-    <string name="settings_monday">Monday</string>
-    <string name="settings_sunday">Sunday</string>
+    <string name="settings_monday">Mon</string>
+    <string name="settings_sunday">Sun</string>
     <string name="settings_remind_to_log_day">Remind to log day</string>
     <string name="settings_desc_remind_to_log_day">Reminds you if today’s status is not set</string>
 
@@ -68,6 +68,7 @@
     <string name="view_earned">Earned: %1$d %2$s</string>
 
     <!-- dialog choose month -->
+    <string name="dialog_chose_month_current">Current</string>
 
 
     <!-- descriptions for image buttons -->
@@ -82,5 +83,10 @@
     <!-- notification -->
     <string name="notif_title">Log your day</string>
     <string name="notif_desc">Today\'s status is not set</string>
+
+    <!-- toasts -->
+    <string name="toast_cant_edit_day">Can\'t edit this day</string>
+    <string name="toast_no_working_days">No working days in this month</string>
+
 
 </resources>

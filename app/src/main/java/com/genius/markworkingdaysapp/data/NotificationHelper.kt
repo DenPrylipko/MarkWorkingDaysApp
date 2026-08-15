@@ -11,9 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.genius.markworkingdaysapp.R
-import com.genius.markworkingdaysapp.ui.main.MainActivity
-import java.util.jar.Manifest
-
+import com.genius.markworkingdaysapp.MainActivity
 
 
 class NotificationHelper(private val context: Context) {

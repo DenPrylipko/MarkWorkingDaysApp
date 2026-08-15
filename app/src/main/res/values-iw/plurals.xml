@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="working_days">
+        <item quantity="one">יום עבודה %d</item>
+        <item quantity="two">ימי עבודה %d</item>
+        <item quantity="other">%d ימי עבודה</item>
+    </plurals>
+
+</resources>
