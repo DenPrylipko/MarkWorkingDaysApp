@@ -1,4 +1,4 @@
-package com.genius.markworkingdaysapp.ui
+package com.genius.markworkingdaysapp.ui.navigation
 
 import androidx.compose.runtime.Composable
 

@@ -1,5 +1,6 @@
-package com.genius.markworkingdaysapp.ui
+package com.genius.markworkingdaysapp.ui.calendar
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,12 +16,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.genius.markworkingdaysapp.AppViewModelProvider
+import com.genius.markworkingdaysapp.ui.calendar.CalendarViewModel
 import com.genius.markworkingdaysapp.ui.theme.AppSpacing
+
 
 @Composable
 fun CalendarScreen(
+    viewModel: CalendarViewModel = viewModel(
+        factory = AppViewModelProvider.Factory
+    ),
+    @SuppressLint("ModifierParameter")
     modifier: Modifier = Modifier
 ) {
+
     Surface(
         modifier = modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surface,

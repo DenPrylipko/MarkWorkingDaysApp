@@ -1,4 +1,4 @@
-package com.genius.markworkingdaysapp.data
+package com.genius.markworkingdaysapp.data.repository
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -25,7 +25,7 @@ class SettingsRepository(context: Context) {
     private fun readSettings(): AppSettings {
         return AppSettings(
             dailyRate = dailyRate,
-            currency = currency,
+            currencyLabel = currency,
             firstDayOfWeek = firstDayOfWeek,
             reminder = ReminderSettings(
                 enabled = notificationsEnabled,
@@ -46,7 +46,7 @@ class SettingsRepository(context: Context) {
         get() = prefs.getInt(KEY_DAILY_RATE, DEFAULT_DAILY_RATE)
 
     private val currency: String
-        get() = prefs.getString(KEY_CURRENCY, DEFAULT_CURRENCY) ?: DEFAULT_CURRENCY
+        get() = prefs.getString(KEY_CURRENCY_LABEL, DEFAULT_CURRENCY_LABEL) ?: DEFAULT_CURRENCY_LABEL
 
     private val firstDayOfWeek: DayOfWeek
         get() {
@@ -86,7 +86,7 @@ class SettingsRepository(context: Context) {
 
     fun setCurrency(value: String) {
         updatePreferences {
-            putString(KEY_CURRENCY, value)
+            putString(KEY_CURRENCY_LABEL, value)
         }
     }
 
@@ -148,14 +148,14 @@ class SettingsRepository(context: Context) {
         private const val PREFS_NAME = "app_settings"
 
         private const val KEY_DAILY_RATE = "daily_rate"
-        private const val KEY_CURRENCY = "currency"
+        private const val KEY_CURRENCY_LABEL = "currency_label"
         private const val KEY_FIRST_DAY_OF_WEEK = "first_day_of_week"
         private const val KEY_NOTIFICATIONS_ENABLED = "notifications_enabled"
         private const val KEY_REMINDER_HOUR = "reminder_hour"
         private const val KEY_REMINDER_MINUTE = "reminder_minute"
 
         private const val DEFAULT_DAILY_RATE = 100
-        private const val DEFAULT_CURRENCY = "$"
+        private const val DEFAULT_CURRENCY_LABEL = "$"
         private const val DEFAULT_NOTIFICATIONS_ENABLED = false
         private const val DEFAULT_REMINDER_HOUR = 20
         private const val DEFAULT_REMINDER_MINUTE = 0

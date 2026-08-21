@@ -5,11 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
-import android.os.Build
-import android.provider.Settings
-import android.util.Log
-import com.genius.markworkingdaysapp.ui.xml.main.ReminderReceiver
-import kotlin.time.Duration.Companion.minutes
+import com.genius.markworkingdaysapp.ReminderReceiver
 
 class ReminderScheduler(private val context: Context) {
 
