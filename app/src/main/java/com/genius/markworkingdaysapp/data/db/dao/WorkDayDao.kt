@@ -23,7 +23,4 @@ interface WorkDayDao {
 
     @Query("SELECT * FROM work_days WHERE epochDay BETWEEN :fromDay AND :toDay ORDER BY epochDay ASC")
     fun observeRange(fromDay: Long, toDay: Long): Flow<List<WorkDayEntity>>
-
-    @Query("SELECT epochDay FROM work_days WHERE status IN ('FULL_DAY', 'SHORT_DAY')")
-    fun observeWorkedEpochDays(): Flow<List<Long>>
 }
