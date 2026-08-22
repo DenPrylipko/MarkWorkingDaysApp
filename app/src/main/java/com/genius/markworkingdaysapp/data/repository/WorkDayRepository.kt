@@ -19,7 +19,7 @@ class WorkDayRepository(
 
     suspend fun saveDay(
         workDay: WorkDay,
-        defaultDailyRate: Int
+        defaultDailyRate: Int,
     ) {
         database.withTransaction {
 
@@ -34,14 +34,24 @@ class WorkDayRepository(
                 )
             )
 
-            workDayDao.upsert(workDay.toEntity())
+            val dailyRate = monthRateDao.getByMonth(monthStartEpochDay)?.dailyRate
+                ?: defaultDailyRate
+
+            workDayDao.upsert(
+                workDay
+                    .withRecalculatedEarned(dailyRate)
+                    .toEntity()
+            )
         }
     }
 
     suspend fun setDailyRateForMonth(
+        dailyRate: Int,
         month: YearMonth,
-        dailyRate: Int
     ) {
+        require(dailyRate >= 0) {
+            "Daily rate cannot be negative"
+        }
 
         database.withTransaction {
             val fromDay = month.atDay(1).toEpochDay()
@@ -66,13 +76,7 @@ class WorkDayRepository(
         }
     }
 
-    suspend fun getDailyRateForMonth(month: YearMonth): Int? {
-        val monthStartEpochDay = month.atDay(1).toEpochDay()
-        return monthRateDao
-            .getByMonth(monthStartEpochDay)
-            ?.dailyRate
-    }
-
+    // using by ReminderReceiver
     suspend fun hasWorkDayEntry(date: LocalDate): Boolean =
         workDayDao.getByEpochDay(date.toEpochDay()) != null
 
@@ -90,5 +94,10 @@ class WorkDayRepository(
                     .map { it.toWorkDay() }
                     .associateBy { it.date }
             }
+
+    fun observeDailyRateForMonth(month: YearMonth): Flow<Int?> {
+        val monthStartEpochDay = month.atDay(1).toEpochDay()
+        return monthRateDao.observeDailyRateByMonth(monthStartEpochDay)
+    }
 
 }

@@ -14,7 +14,8 @@ object AppViewModelProvider {
 
         initializer {
             CalendarViewModel(
-                settingsRepository = application().settingsRepository
+                settingsRepository = application().settingsRepository,
+                workDayRepository = application().workDayRepository,
             )
         }
 
