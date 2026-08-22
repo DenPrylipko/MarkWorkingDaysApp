@@ -1,4 +1,4 @@
-package com.genius.markworkingdaysapp.ui.calendar
+package com.genius.markworkingdaysapp.ui.calendar.model
 
 data class MonthGridUiModel(
     val cells: List<DayCellUiModel>,

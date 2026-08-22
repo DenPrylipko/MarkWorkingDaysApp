@@ -19,13 +19,17 @@ class SettingsRepository(context: Context) {
         Context.MODE_PRIVATE
     )
 
+    init {
+        migrateCurrencyKey()
+    }
+
     private val _settings = MutableStateFlow(readSettings())
     val settings: StateFlow<AppSettings> = _settings.asStateFlow()
 
     private fun readSettings(): AppSettings {
         return AppSettings(
             dailyRate = dailyRate,
-            currencyLabel = currency,
+            currencyLabel = currencyLabel,
             firstDayOfWeek = firstDayOfWeek,
             reminder = ReminderSettings(
                 enabled = notificationsEnabled,
@@ -45,8 +49,9 @@ class SettingsRepository(context: Context) {
     private val dailyRate: Int
         get() = prefs.getInt(KEY_DAILY_RATE, DEFAULT_DAILY_RATE)
 
-    private val currency: String
-        get() = prefs.getString(KEY_CURRENCY_LABEL, DEFAULT_CURRENCY_LABEL) ?: DEFAULT_CURRENCY_LABEL
+    private val currencyLabel: String
+        get() = prefs.getString(KEY_CURRENCY_LABEL, DEFAULT_CURRENCY_LABEL)
+            ?: DEFAULT_CURRENCY_LABEL
 
     private val firstDayOfWeek: DayOfWeek
         get() {
@@ -84,7 +89,7 @@ class SettingsRepository(context: Context) {
         }
     }
 
-    fun setCurrency(value: String) {
+    fun setCurrencyLabel(value: String) {
         updatePreferences {
             putString(KEY_CURRENCY_LABEL, value)
         }
@@ -148,6 +153,7 @@ class SettingsRepository(context: Context) {
         private const val PREFS_NAME = "app_settings"
 
         private const val KEY_DAILY_RATE = "daily_rate"
+        private const val OLD_KEY_CURRENCY = "currency"
         private const val KEY_CURRENCY_LABEL = "currency_label"
         private const val KEY_FIRST_DAY_OF_WEEK = "first_day_of_week"
         private const val KEY_NOTIFICATIONS_ENABLED = "notifications_enabled"
@@ -161,4 +167,27 @@ class SettingsRepository(context: Context) {
         private const val DEFAULT_REMINDER_MINUTE = 0
     }
 
+    private fun migrateCurrencyKey() {
+        if (!prefs.contains(OLD_KEY_CURRENCY)) return
+
+        val oldCurrency = prefs.getString(
+            OLD_KEY_CURRENCY,
+            null,
+        )
+
+        prefs.edit {
+            if (
+                !prefs.contains(KEY_CURRENCY_LABEL) &&
+                oldCurrency != null
+            ) {
+                putString(
+                    KEY_CURRENCY_LABEL,
+                    oldCurrency
+                )
+            }
+
+            remove(OLD_KEY_CURRENCY)
+
+        }
+    }
 }

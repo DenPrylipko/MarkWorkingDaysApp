@@ -13,20 +13,40 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.genius.markworkingdaysapp.AppViewModelProvider
-import com.genius.markworkingdaysapp.ui.calendar.CalendarViewModel
+import com.genius.markworkingdaysapp.model.WorkDay
 import com.genius.markworkingdaysapp.ui.theme.AppSpacing
+import java.time.YearMonth
 
+@Composable
+fun CalendarRoute(
+    viewModel: CalendarViewModel = viewModel<CalendarViewModel>(
+        factory = AppViewModelProvider.Factory,
+    ),
+) {
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    CalendarScreen(
+        uiState = uiState,
+        onSaveDay = viewModel::onSaveDay,
+        onMonthSelected = viewModel::onMonthSelected,
+        onDailyRateSaved = viewModel::onDailyRateSaved,
+    )
+}
 
 @Composable
 fun CalendarScreen(
-    viewModel: CalendarViewModel = viewModel(
-        factory = AppViewModelProvider.Factory
-    ),
+    uiState: CalendarUiState,
+    onSaveDay: (WorkDay) -> Unit,
+    onMonthSelected: (YearMonth) -> Unit,
+    onDailyRateSaved: (Int) -> Unit,
     @SuppressLint("ModifierParameter")
     modifier: Modifier = Modifier
 ) {

@@ -1,14 +1,15 @@
-package com.genius.markworkingdaysapp.ui.xml.main
+package com.genius.markworkingdaysapp
 
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.genius.markworkingdaysapp.data.AppSettings
 import com.genius.markworkingdaysapp.data.NotificationHelper
 import com.genius.markworkingdaysapp.data.ReminderScheduler
 import com.genius.markworkingdaysapp.data.db.DatabaseProvider
-import com.genius.markworkingdaysapp.data.db.WorkDayRepository
+import com.genius.markworkingdaysapp.data.repository.SettingsRepository
+import com.genius.markworkingdaysapp.data.repository.WorkDayRepository
+import com.genius.markworkingdaysapp.model.AppSettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,14 +20,14 @@ class ReminderReceiver : BroadcastReceiver() {
     @SuppressLint("SuspiciousIndentation")
     override fun onReceive(context: Context, intent: Intent) {
         val pendingResult = goAsync()
-        val settings = AppSettings(context)
+        val settings = SettingsRepository(context).settings.value
 
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             try {
-                if (settings.notificationsEnabled) {
+                if (settings.reminder.enabled) {
                     ReminderScheduler(context).schedule(
-                        settings.reminderHour,
-                        settings.reminderMinute
+                        settings.reminder.hour,
+                        settings.reminder.minute
                     )
                 }
             } finally {
@@ -37,11 +38,11 @@ class ReminderReceiver : BroadcastReceiver() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val dao = DatabaseProvider.get(context).workDayDao()
+                val dao = DatabaseProvider.get(context)
                 val repository = WorkDayRepository(dao)
 
                 val today = LocalDate.now()
-                val isTodayChecked = repository.isDayChecked(today)
+                val isTodayChecked = repository.hasWorkDayEntry(today)
 
                 if (!isTodayChecked) {
                     NotificationHelper(context).createChannel()
@@ -49,8 +50,8 @@ class ReminderReceiver : BroadcastReceiver() {
                 }
 
                 ReminderScheduler(context).schedule(
-                    settings.reminderHour,
-                    settings.reminderMinute
+                    settings.reminder.hour,
+                    settings.reminder.minute
                 )
 
             } finally {
@@ -60,4 +61,3 @@ class ReminderReceiver : BroadcastReceiver() {
 
     }
 }
-

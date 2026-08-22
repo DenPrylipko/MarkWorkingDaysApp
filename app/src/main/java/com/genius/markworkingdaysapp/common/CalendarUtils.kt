@@ -1,23 +1,27 @@
 package com.genius.markworkingdaysapp.common
 
 import android.annotation.SuppressLint
-import com.genius.markworkingdaysapp.model.DayCell
-import com.genius.markworkingdaysapp.model.MonthGridBase
-import com.genius.markworkingdaysapp.model.MonthItem
+import com.genius.markworkingdaysapp.model.DayStatus
 import com.genius.markworkingdaysapp.model.MonthStatus
+import com.genius.markworkingdaysapp.model.WorkDay
+import com.genius.markworkingdaysapp.ui.calendar.model.DayCellUiModel
+import com.genius.markworkingdaysapp.ui.calendar.model.MonthGridUiModel
+import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.MonthItem
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Year
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
 import java.util.Locale
+import kotlin.collections.mutableSetOf
 
-fun buildMonthGridBase(
+fun buildMonthGrid(
     yearMonth: YearMonth,
     firstDayOfWeek: DayOfWeek,
-): MonthGridBase {
+    workDays: Map<LocalDate, WorkDay>
+): MonthGridUiModel {
     val firstDayOfMonth = yearMonth.atDay(1)
+    val lastDayOfMonth = yearMonth.atEndOfMonth()
 
     val shift = (firstDayOfMonth.dayOfWeek.value - firstDayOfWeek.value + 7) % 7
 
@@ -25,15 +29,17 @@ fun buildMonthGridBase(
 
     val listOfDays = (0 until 42).map {i ->
         val day = start.plusDays(i.toLong())
-        DayCell(
+        DayCellUiModel(
             date = day,
-            isInCurrentMonth = (day.monthValue == yearMonth.monthValue)
+            workDay = if (day in firstDayOfMonth..lastDayOfMonth) {
+                workDays[day]
+            } else {
+                null
+            }
         )
     }
 
-    val end = listOfDays.last().date
-
-    return MonthGridBase(listOfDays, start, end)
+    return MonthGridUiModel(listOfDays)
 }
 
 fun buildWeekdays(firstDayOfWeek: DayOfWeek): List<DayOfWeek> {
@@ -44,33 +50,39 @@ fun buildWeekdays(firstDayOfWeek: DayOfWeek): List<DayOfWeek> {
 
 fun buildMonthItemsForYear(
     year: Year,
-    workedMonth: Set<YearMonth>,
-    locale: Locale = Locale.getDefault()
+    workDays: Map<LocalDate, WorkDay>
 ): List<MonthItem> {
-    val today = LocalDate.now()
+
+    val monthsWithWorkDays = workDays.values
+        .filter { workDay ->
+            workDay.status == DayStatus.FULL_DAY ||
+                    workDay.status == DayStatus.SHORT_DAY
+        }
+        .mapTo(mutableSetOf()) { workDay ->
+            YearMonth.from(workDay.date)
+        }
+
+    val today = YearMonth.now()
 
     return (1..12).map { monthValue ->
         val monthDate = YearMonth.of(year.value, monthValue)
-        val isWorked = monthDate in workedMonth
 
         val status = when {
 
-            monthDate.year == today.year && monthDate.monthValue == today.monthValue ->  {
+            monthDate == today ->
                 MonthStatus.CURRENT
+
+            monthDate > today -> {
+                MonthStatus.FUTURE
             }
-            monthDate.isBefore(YearMonth.from(today)) && isWorked -> {
+            monthDate in monthsWithWorkDays -> {
                 MonthStatus.PAST_WORKED
             }
-            monthDate.isBefore(YearMonth.from(today)) && !isWorked -> {
-                MonthStatus.PAST_NOT_WORKED
-            }
-            else -> MonthStatus.FUTURE
+            else -> MonthStatus.PAST_NOT_WORKED
         }
 
         MonthItem(
             yearMonth = monthDate,
-            title = monthDate.month.getDisplayName(TextStyle.FULL, locale)
-                .replaceFirstChar { it.titlecase(locale) },
             status = status
         )
     }
@@ -79,7 +91,10 @@ fun buildMonthItemsForYear(
 fun getMonthTitle(yearMonth: YearMonth): String {
     val locale = Locale.getDefault()
     val formatter = DateTimeFormatter.ofPattern("LLLL", locale)
-    return yearMonth.format(formatter).replaceFirstChar { it.uppercase(locale) }
+
+    return yearMonth
+        .format(formatter)
+        .replaceFirstChar { it.uppercase(locale) }
 }
 
 @SuppressLint("DefaultLocale")

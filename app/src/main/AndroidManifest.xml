@@ -27,7 +27,7 @@
         </activity>
 
         <receiver
-            android:name=".ui.xml.main.ReminderReceiver"
+            android:name=".ReminderReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
