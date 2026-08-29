@@ -90,6 +90,9 @@ fun EditDayDialog(
             DayStatus.NOT_WORKED -> MaterialTheme.appColors.statusNotWorked
         }
 
+        val isSaveEnabled = (earned.toIntOrNull() != null && earned.toIntOrNull() != 0) ||
+                selectedStatus != DayStatus.SHORT_DAY
+
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.large,
@@ -197,13 +200,13 @@ fun EditDayDialog(
                             status = selectedStatus,
                             bonus = selectedBonus,
                             earned = dayEarned,
-                            note = note,
+                            note = note.ifBlank { null },
                         )
 
                         onSave(collectedWorkDay)
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    enabled = (earned.toIntOrNull() != null || selectedStatus != DayStatus.SHORT_DAY)
+                    enabled = isSaveEnabled
                 )
 
 
