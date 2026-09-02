@@ -17,7 +17,7 @@ internal fun WorkDay.toEntity(): WorkDayEntity =
     WorkDayEntity(
         epochDay = date.toEpochDay(),
         status = status,
-        bonus = bonus,
+        bonus = if (bonus == 0) null else bonus,
         earned = earned,
         note = note,
     )

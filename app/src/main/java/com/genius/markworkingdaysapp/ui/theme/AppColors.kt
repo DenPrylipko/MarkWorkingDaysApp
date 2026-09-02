@@ -32,6 +32,13 @@ data class AppColors(
     val calendarNotWorked: Color,
     val calendarOnNotWorked: Color,
 
+    // calendar month
+    val calendarMonthWorked: Color,
+    val calendarMonthOnWorked: Color,
+
+    val calendarMonthDefault: Color,
+    val calendarMonthOnDefault: Color,
+
     // statistics
     val statisticsHighest: Color,
     val statisticAverage: Color,

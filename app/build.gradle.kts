@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -10,13 +12,13 @@ plugins {
 android {
     namespace = "com.genius.markworkingdaysapp"
     compileSdk {
-        version = release(36)
+        version = release(37)
     }
 
     defaultConfig {
         applicationId = "com.genius.markworkingdaysapp"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 5
         versionName = "1.0"
 
@@ -50,6 +52,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.compose.foundation.layout)
     val composeBom = platform(libs.androidx.compose.bom)
 
     implementation(composeBom)

@@ -58,8 +58,8 @@ class NotificationHelper(private val context: Context) {
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_money)
-            .setContentTitle(ContextCompat.getString(context, R.string.notif_title))
-            .setContentText(ContextCompat.getString(context, R.string.notif_desc))
+            .setContentTitle(ContextCompat.getString(context, R.string.notification_title))
+            .setContentText(ContextCompat.getString(context, R.string.notification_description))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)

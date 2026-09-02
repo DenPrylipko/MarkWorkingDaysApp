@@ -11,25 +11,28 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.genius.markworkingdaysapp.model.AppScreen
-import com.genius.markworkingdaysapp.model.AppScreen.CALENDAR
 import com.genius.markworkingdaysapp.ui.calendar.CalendarRoute
+import com.genius.markworkingdaysapp.ui.theme.AppSpacing
 
 @Composable
 fun MainScreen() {
     var selectedScreen by rememberSaveable {
-        mutableStateOf(CALENDAR)
+        mutableStateOf(AppScreen.CALENDAR)
     }
 
     Scaffold(
         topBar = {
-            AppTopBar()
+            AppTopBar(
+                selectedScreen = selectedScreen,
+            )
         },
     ) { innerPadding ->
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .padding(top = AppSpacing.space12),
         ) {
             when (selectedScreen) {
                 AppScreen.CALENDAR -> CalendarRoute()
