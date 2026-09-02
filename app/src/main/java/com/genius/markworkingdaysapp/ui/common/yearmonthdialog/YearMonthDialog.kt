@@ -175,13 +175,18 @@ private fun MonthElement(
     val style = element.status.getStyle()
 
     val containerAlpha = when {
-        element.yearMonth == displayedMonth -> 1f
-        enabled -> 0.7f
-        else -> 0.15f
+        element.yearMonth == displayedMonth ->
+            MonthItemDefaults.SELECTED_CONTAINER_ALPHA
+        enabled ->
+            MonthItemDefaults.ENABLED_CONTAINER_ALPHA
+        else ->
+            MonthItemDefaults.DISABLED_CONTAINER_ALPHA
     }
     val contentAlpha = when {
-        enabled -> 1f
-        else -> 0.5f
+        enabled ->
+            MonthItemDefaults.ENABLED_CONTENT_ALPHA
+        else ->
+            MonthItemDefaults.DISABLED_CONTENT_ALPHA
     }
 
     Surface(
