@@ -65,6 +65,13 @@ private val LightAppColors = AppColors(
     calendarNotWorked = Neutral150,
     calendarOnNotWorked = Neutral700,
 
+    // calendar month
+    calendarMonthWorked = Green400,
+    calendarMonthOnWorked = NeutralWhite,
+
+    calendarMonthDefault = Neutral400,
+    calendarMonthOnDefault = NeutralWhite,
+
     // statistics
     statisticsHighest = Green250,
     statisticAverage = Blue250,
@@ -102,6 +109,13 @@ private val DarkAppColors = AppColors(
 
     calendarNotWorked = Neutral800,
     calendarOnNotWorked = NeutralWhite,
+
+    // calendar month
+    calendarMonthWorked = Green500,
+    calendarMonthOnWorked = NeutralWhite,
+
+    calendarMonthDefault = Neutral500,
+    calendarMonthOnDefault = NeutralWhite,
 
     // statistics
     statisticsHighest = Green800,

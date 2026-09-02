@@ -6,7 +6,7 @@ import com.genius.markworkingdaysapp.model.MonthStatus
 import com.genius.markworkingdaysapp.model.WorkDay
 import com.genius.markworkingdaysapp.ui.calendar.model.DayCellUiModel
 import com.genius.markworkingdaysapp.ui.calendar.model.MonthGridUiModel
-import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.MonthItem
+import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.MonthItemUiState
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Year
@@ -51,7 +51,7 @@ fun buildWeekdays(firstDayOfWeek: DayOfWeek): List<DayOfWeek> {
 fun buildMonthItemsForYear(
     year: Year,
     workDays: Map<LocalDate, WorkDay>
-): List<MonthItem> {
+): List<MonthItemUiState> {
 
     val monthsWithWorkDays = workDays.values
         .filter { workDay ->
@@ -81,20 +81,23 @@ fun buildMonthItemsForYear(
             else -> MonthStatus.PAST_NOT_WORKED
         }
 
-        MonthItem(
+        MonthItemUiState(
             yearMonth = monthDate,
             status = status
         )
     }
 }
 
-fun getMonthTitle(yearMonth: YearMonth): String {
+fun YearMonth.getMonthTitle(
+    withYear: Boolean = false
+): String {
     val locale = Locale.getDefault()
     val formatter = DateTimeFormatter.ofPattern("LLLL", locale)
 
-    return yearMonth
+    return this
         .format(formatter)
-        .replaceFirstChar { it.uppercase(locale) }
+        .replaceFirstChar { it.uppercase(locale) } + if (withYear) " ${this.year}" else ""
+
 }
 
 @SuppressLint("DefaultLocale")

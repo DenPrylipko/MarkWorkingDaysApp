@@ -14,14 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import com.genius.markworkingdaysapp.R
 import com.genius.markworkingdaysapp.model.DayStatus
+import com.genius.markworkingdaysapp.ui.calendar.model.getStyle
 import com.genius.markworkingdaysapp.ui.theme.AppDimensions
 import com.genius.markworkingdaysapp.ui.theme.AppSpacing
-import com.genius.markworkingdaysapp.ui.theme.appColors
 
 @Composable
 internal fun StatusSelector(
@@ -35,27 +33,21 @@ internal fun StatusSelector(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         StatusSelectorElement(
-            label = stringResource(R.string.status_full_day),
-            containerColor = MaterialTheme.appColors.statusFullDay,
-            contentColor = MaterialTheme.appColors.statusOnFullDay,
+            status = DayStatus.FULL_DAY,
             onClick = {
                 onStatusChange(DayStatus.FULL_DAY)
             },
             selected = status == DayStatus.FULL_DAY,
         )
         StatusSelectorElement(
-            label = stringResource(R.string.status_short_day),
-            containerColor = MaterialTheme.appColors.statusShortDay,
-            contentColor = MaterialTheme.appColors.statusOnShortDay,
+            status = DayStatus.SHORT_DAY,
             onClick = {
                 onStatusChange(DayStatus.SHORT_DAY)
             },
             selected = status == DayStatus.SHORT_DAY,
         )
         StatusSelectorElement(
-            label = stringResource(R.string.status_not_worked),
-            containerColor = MaterialTheme.appColors.statusNotWorked,
-            contentColor = MaterialTheme.appColors.statusOnNotWorked,
+            status = DayStatus.NOT_WORKED,
             onClick = {
                 onStatusChange(DayStatus.NOT_WORKED)
             },
@@ -66,20 +58,19 @@ internal fun StatusSelector(
 
 @Composable
 private fun StatusSelectorElement(
-    label: String,
-    containerColor: Color,
-    contentColor: Color,
+    status: DayStatus,
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val style = status.getStyle()
 
     val widthFraction = if (selected) 1f else 0.85f
 
     val displayedContainerColor = if (selected) {
-        containerColor
+        style.containerColor
     } else {
-        containerColor.copy(alpha = 0.5f)
+        style.containerColor.copy(alpha = 0.5f)
     }
 
     Box(
@@ -102,14 +93,14 @@ private fun StatusSelectorElement(
                 .height(AppDimensions.statusSelectorContainer),
             shape = MaterialTheme.shapes.medium,
             color = displayedContainerColor,
-            contentColor = contentColor,
+            contentColor = style.contentColor,
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = label,
+                    text = stringResource(style.textRes),
                     style = if (selected) {
                         MaterialTheme.typography.bodyLarge
                     } else {

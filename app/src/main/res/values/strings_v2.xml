@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
 
-
+    <string name="app_name">Mark Working Days</string>
                     <!-- .......... v 2.0 .......... -->
     <string name="version_format" translatable="false">v%1$s</string>
 
@@ -69,6 +69,7 @@
     <string name="edit_day_day_off">Day off</string>
 
     <string name="edit_day_note">Note</string>
+    <string name="edit_day_note_hint">Add a note</string>
 
     <string name="edit_day_action_save">Confirm</string>
 
