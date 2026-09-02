@@ -24,11 +24,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.genius.markworkingdaysapp.R
 import com.genius.markworkingdaysapp.model.DayStatus
 import com.genius.markworkingdaysapp.model.WorkDay
 import com.genius.markworkingdaysapp.ui.calendar.model.DayCellUiModel
+import com.genius.markworkingdaysapp.ui.common.dialog.AppDialog
 import com.genius.markworkingdaysapp.ui.theme.AppDimensions
 import com.genius.markworkingdaysapp.ui.theme.AppSpacing
 import com.genius.markworkingdaysapp.ui.theme.appColors
@@ -40,6 +40,7 @@ fun EditDayDialog(
     dailyRate: Int,
     onSave: (WorkDay) -> Unit,
     onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val workDay = day.workDay
 
@@ -76,7 +77,7 @@ fun EditDayDialog(
     }
 
 
-    Dialog(
+    AppDialog(
         onDismissRequest = onDismissRequest,
     ) {
 
@@ -94,7 +95,7 @@ fun EditDayDialog(
                 selectedStatus != DayStatus.SHORT_DAY
 
         Surface(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier,
             shape = MaterialTheme.shapes.large,
             color = surfaceColor,
         ) {
