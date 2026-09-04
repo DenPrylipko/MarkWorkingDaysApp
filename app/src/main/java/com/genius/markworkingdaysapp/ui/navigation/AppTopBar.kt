@@ -36,6 +36,8 @@ import com.genius.markworkingdaysapp.ui.theme.AppSpacing
 @Composable
 fun AppTopBar(
     selectedScreen: AppScreen,
+    onChangeRateClick: () -> Unit,
+    onShareClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -89,8 +91,14 @@ fun AppTopBar(
         CalendarControl(
             isExpanded = isCalendarControlExpanded,
             onExpandedChange = { isCalendarControlExpanded = it },
-            onChangeRateClick = {},
-            onShareClick = {},
+            onChangeRateClick = {
+                isCalendarControlExpanded = false
+                onChangeRateClick()
+            },
+            onShareClick = {
+                isCalendarControlExpanded = false
+                onShareClick()
+            },
             modifier = Modifier.align(Alignment.CenterEnd)
         )
 

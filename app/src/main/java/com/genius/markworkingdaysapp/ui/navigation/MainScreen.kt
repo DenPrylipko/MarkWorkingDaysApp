@@ -19,11 +19,18 @@ fun MainScreen() {
     var selectedScreen by rememberSaveable {
         mutableStateOf(AppScreen.CALENDAR)
     }
+    var isEditDailyRateDialogVisible by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     Scaffold(
         topBar = {
             AppTopBar(
                 selectedScreen = selectedScreen,
+                onChangeRateClick = {
+                    isEditDailyRateDialogVisible = true
+                },
+                onShareClick = {},
             )
         },
     ) { innerPadding ->
@@ -35,7 +42,12 @@ fun MainScreen() {
                 .padding(top = AppSpacing.space12),
         ) {
             when (selectedScreen) {
-                AppScreen.CALENDAR -> CalendarRoute()
+                AppScreen.CALENDAR -> CalendarRoute(
+                    isEditDailyRateDialogVisible = isEditDailyRateDialogVisible,
+                    onEditDailyRateDialogDismiss = {
+                        isEditDailyRateDialogVisible = false
+                    }
+                )
                 AppScreen.STATISTICS -> {}
                 AppScreen.SETTINGS -> {}
             }

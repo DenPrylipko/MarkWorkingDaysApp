@@ -36,6 +36,7 @@ import com.genius.markworkingdaysapp.common.getMonthTitle
 import com.genius.markworkingdaysapp.model.DayStatus
 import com.genius.markworkingdaysapp.model.MonthStatistics
 import com.genius.markworkingdaysapp.ui.calendar.daycard.DayCard
+import com.genius.markworkingdaysapp.ui.calendar.editdailyrate.EditDailyRateDialog
 import com.genius.markworkingdaysapp.ui.calendar.editday.EditDayDialog
 import com.genius.markworkingdaysapp.ui.calendar.model.DayCellUiModel
 import com.genius.markworkingdaysapp.ui.calendar.model.MonthGridUiModel
@@ -54,6 +55,8 @@ const val DIALOG_FRACTION = 0.88f
 
 @Composable
 fun CalendarRoute(
+    isEditDailyRateDialogVisible: Boolean,
+    onEditDailyRateDialogDismiss: () -> Unit,
     viewModel: CalendarViewModel = viewModel<CalendarViewModel>(
         factory = AppViewModelProvider.Factory,
     ),
@@ -73,8 +76,6 @@ fun CalendarRoute(
         onDisplayedMonthClick = {
             viewModel.onYearMonthDialogOpen()
         },
-        onChangeRateClick = {},
-        onShareClick = {},
     )
 
     // EditDayDialog
@@ -110,6 +111,21 @@ fun CalendarRoute(
         )
     }
 
+    // EditDailyRateDialog
+    if (isEditDailyRateDialogVisible) {
+        EditDailyRateDialog(
+            yearMonth = uiState.displayedMonthItem.yearMonth,
+            incomingDailyRate = uiState.displayedMonthDailyRate,
+            onSave = { newValue ->
+                viewModel.onDailyRateSaved(newValue)
+                onEditDailyRateDialogDismiss()
+            },
+            onDismiss = onEditDailyRateDialogDismiss,
+            modifier = Modifier.fillMaxWidth(DIALOG_FRACTION),
+
+        )
+    }
+
 }
 
 @Composable
@@ -117,8 +133,6 @@ fun CalendarScreen(
     uiState: CalendarUiState,
     onDayClick: (DayCellUiModel) -> Unit,
     onDisplayedMonthClick: () -> Unit,
-    onChangeRateClick: () -> Unit,
-    onShareClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val today = LocalDate.now()
