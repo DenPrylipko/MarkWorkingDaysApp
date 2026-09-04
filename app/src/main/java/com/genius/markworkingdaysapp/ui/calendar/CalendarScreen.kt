@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -29,7 +28,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.genius.markworkingdaysapp.AppViewModelProvider
@@ -41,9 +39,9 @@ import com.genius.markworkingdaysapp.ui.calendar.daycard.DayCard
 import com.genius.markworkingdaysapp.ui.calendar.editday.EditDayDialog
 import com.genius.markworkingdaysapp.ui.calendar.model.DayCellUiModel
 import com.genius.markworkingdaysapp.ui.calendar.model.MonthGridUiModel
+import com.genius.markworkingdaysapp.ui.common.ActionButton
 import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.MonthItemUiState
 import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.YearMonthDialog
-import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.getStyle
 import com.genius.markworkingdaysapp.ui.theme.AppDimensions
 import com.genius.markworkingdaysapp.ui.theme.AppSpacing
 import com.genius.markworkingdaysapp.ui.theme.appColors
@@ -51,6 +49,8 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
+
+const val DIALOG_FRACTION = 0.88f
 
 @Composable
 fun CalendarRoute(
@@ -73,7 +73,8 @@ fun CalendarRoute(
         onDisplayedMonthClick = {
             viewModel.onYearMonthDialogOpen()
         },
-        onDailyRateSaved = viewModel::onDailyRateSaved,
+        onChangeRateClick = {},
+        onShareClick = {},
     )
 
     // EditDayDialog
@@ -88,7 +89,7 @@ fun CalendarRoute(
             onDismissRequest = {
                 selectedDay = null
             },
-            modifier = Modifier.fillMaxWidth(0.88f)
+            modifier = Modifier.fillMaxWidth(DIALOG_FRACTION)
         )
     }
 
@@ -105,7 +106,7 @@ fun CalendarRoute(
             onDismissRequest = {
                 viewModel.onYearMonthDialogYearDismiss()
             },
-            modifier = Modifier.fillMaxWidth(0.88f)
+            modifier = Modifier.fillMaxWidth(DIALOG_FRACTION)
         )
     }
 
@@ -116,7 +117,8 @@ fun CalendarScreen(
     uiState: CalendarUiState,
     onDayClick: (DayCellUiModel) -> Unit,
     onDisplayedMonthClick: () -> Unit,
-    onDailyRateSaved: (Int) -> Unit,
+    onChangeRateClick: () -> Unit,
+    onShareClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val today = LocalDate.now()
@@ -174,6 +176,7 @@ private fun MonthCalendar(
     onMonthClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val monthHeader = displayedMonthItem.yearMonth.getMonthTitle(withYear = true)
 
     Column(
         modifier = modifier,
@@ -181,9 +184,9 @@ private fun MonthCalendar(
         verticalArrangement = Arrangement.spacedBy(AppSpacing.space18)
     ) {
 
-        MonthHeader(
-            monthItem = displayedMonthItem,
-            onClick = onMonthClick
+        ActionButton(
+            label = monthHeader,
+            onClick = onMonthClick,
         )
 
         Surface(
@@ -195,48 +198,20 @@ private fun MonthCalendar(
             Column(
                 modifier = Modifier.padding(AppSpacing.space12)
             ) {
+
                 WeekdaysHeader(days = daysOfWeek)
+
                 Spacer(Modifier.height(AppSpacing.space12))
+
                 MonthGrid(
                     displayedMonth = displayedMonthItem.yearMonth,
                     monthGrid = monthGrid,
                     onDayClick = onDayClick,
                 )
+
             }
         }
     }
-
-}
-
-@Composable
-private fun MonthHeader(
-    monthItem: MonthItemUiState,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val style = monthItem.status.getStyle()
-    val monthTitle = monthItem.yearMonth.getMonthTitle(withYear = true)
-
-    Surface(
-        onClick = onClick,
-        modifier = modifier
-            .height(40.dp)
-            .widthIn(min = 120.dp),
-        color = style.containerColor,
-        contentColor = style.contentColor,
-        shape = MaterialTheme.shapes.large,
-    ) {
-        Box(
-            modifier = Modifier.padding(
-                horizontal = AppSpacing.space24
-            ), contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = monthTitle, style = MaterialTheme.typography.titleLarge
-            )
-        }
-    }
-
 }
 
 @Composable

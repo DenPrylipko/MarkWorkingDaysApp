@@ -28,6 +28,7 @@ import com.genius.markworkingdaysapp.R
 import com.genius.markworkingdaysapp.model.DayStatus
 import com.genius.markworkingdaysapp.model.WorkDay
 import com.genius.markworkingdaysapp.ui.calendar.model.DayCellUiModel
+import com.genius.markworkingdaysapp.ui.common.ActionButton
 import com.genius.markworkingdaysapp.ui.common.dialog.AppDialog
 import com.genius.markworkingdaysapp.ui.theme.AppDimensions
 import com.genius.markworkingdaysapp.ui.theme.AppSpacing
@@ -184,7 +185,7 @@ fun EditDayDialog(
                     }
                 )
 
-                PrimaryButton(
+                ActionButton(
                     label = stringResource(R.string.edit_day_action_save),
                     onClick = {
                         val selectedBonus = if (selectedStatus == DayStatus.FULL_DAY)
@@ -216,51 +217,4 @@ fun EditDayDialog(
         }
     }
 
-}
-
-
-@Composable
-private fun PrimaryButton(
-    label: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-) {
-    val shape = MaterialTheme.shapes.large
-    val containerColor = MaterialTheme.colorScheme.primary
-    val contentColor = MaterialTheme.colorScheme.onPrimary
-    val textStyle = if (enabled)
-        MaterialTheme.typography.titleLarge
-    else
-        MaterialTheme.typography.bodyMedium
-
-
-    Box(
-        modifier = modifier.height(50.dp)
-    ) {
-
-        Surface(
-            modifier = Modifier,
-            enabled = enabled,
-            onClick = onClick,
-            shape = shape,
-            color = if (enabled)
-                containerColor
-            else
-                containerColor.copy(alpha = 0.3f),
-            contentColor = contentColor,
-        ) {
-
-            Text(
-                text = label,
-                style = textStyle,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(
-                    horizontal = AppSpacing.space24,
-                    vertical = AppSpacing.space12
-                ),
-            )
-
-        }
-    }
 }
