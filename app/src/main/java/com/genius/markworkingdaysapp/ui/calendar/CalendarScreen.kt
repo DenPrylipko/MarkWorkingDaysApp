@@ -39,7 +39,6 @@ import com.genius.markworkingdaysapp.ui.calendar.daycard.DayCard
 import com.genius.markworkingdaysapp.ui.calendar.editdailyrate.EditDailyRateDialog
 import com.genius.markworkingdaysapp.ui.calendar.editday.EditDayDialog
 import com.genius.markworkingdaysapp.ui.calendar.model.DayCellUiModel
-import com.genius.markworkingdaysapp.ui.calendar.model.MonthGridUiModel
 import com.genius.markworkingdaysapp.ui.common.ActionButton
 import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.MonthItemUiState
 import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.YearMonthDialog
@@ -138,7 +137,7 @@ fun CalendarScreen(
     val today = LocalDate.now()
 
     val currentDay = if (uiState.displayedMonthItem.yearMonth == YearMonth.from(today)) {
-        uiState.monthGrid.cells.firstOrNull { day ->
+        uiState.days.firstOrNull { day ->
             day.date == today
         }
     } else {
@@ -164,7 +163,7 @@ fun CalendarScreen(
             MonthCalendar(
                 displayedMonthItem = uiState.displayedMonthItem,
                 daysOfWeek = uiState.daysOfWeek,
-                monthGrid = uiState.monthGrid,
+                monthGrid = uiState.days,
                 onDayClick = onDayClick,
                 onMonthClick = onDisplayedMonthClick,
             )
@@ -185,7 +184,7 @@ fun CalendarScreen(
 private fun MonthCalendar(
     displayedMonthItem: MonthItemUiState,
     daysOfWeek: List<DayOfWeek>,
-    monthGrid: MonthGridUiModel,
+    monthGrid: List<DayCellUiModel>,
     onDayClick: (DayCellUiModel) -> Unit,
     onMonthClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -219,7 +218,7 @@ private fun MonthCalendar(
 
                 MonthGrid(
                     displayedMonth = displayedMonthItem.yearMonth,
-                    monthGrid = monthGrid,
+                    days = monthGrid,
                     onDayClick = onDayClick,
                 )
 
@@ -262,7 +261,7 @@ private fun WeekdaysHeader(
 @Composable
 private fun MonthGrid(
     displayedMonth: YearMonth,
-    monthGrid: MonthGridUiModel,
+    days: List<DayCellUiModel>,
     onDayClick: (DayCellUiModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -273,7 +272,7 @@ private fun MonthGrid(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(AppSpacing.space6),
     ) {
-        monthGrid.cells.chunked(7).forEach { week ->
+        days.chunked(7).forEach { week ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(AppSpacing.space6),

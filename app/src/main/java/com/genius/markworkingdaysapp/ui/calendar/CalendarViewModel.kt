@@ -91,7 +91,7 @@ class CalendarViewModel(
             displayedMonthItem = displayedMonth.toMonthItemUiState(monthStatus),
             displayedMonthDailyRate = displayedMonthDailyRate,
             currencyLabel = settings.currencyLabel,
-            monthGrid = buildMonthGrid(
+            days = buildMonthGrid(
                 yearMonth = displayedMonth,
                 firstDayOfWeek = settings.firstDayOfWeek,
                 workDays = workDays,

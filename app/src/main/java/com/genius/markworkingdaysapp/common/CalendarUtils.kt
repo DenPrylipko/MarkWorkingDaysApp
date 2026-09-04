@@ -5,7 +5,6 @@ import com.genius.markworkingdaysapp.model.DayStatus
 import com.genius.markworkingdaysapp.model.MonthStatus
 import com.genius.markworkingdaysapp.model.WorkDay
 import com.genius.markworkingdaysapp.ui.calendar.model.DayCellUiModel
-import com.genius.markworkingdaysapp.ui.calendar.model.MonthGridUiModel
 import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.MonthItemUiState
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -19,7 +18,7 @@ fun buildMonthGrid(
     yearMonth: YearMonth,
     firstDayOfWeek: DayOfWeek,
     workDays: Map<LocalDate, WorkDay>
-): MonthGridUiModel {
+): List<DayCellUiModel> {
     val firstDayOfMonth = yearMonth.atDay(1)
     val lastDayOfMonth = yearMonth.atEndOfMonth()
 
@@ -39,7 +38,7 @@ fun buildMonthGrid(
         )
     }
 
-    return MonthGridUiModel(listOfDays)
+    return listOfDays
 }
 
 fun buildWeekdays(firstDayOfWeek: DayOfWeek): List<DayOfWeek> {
