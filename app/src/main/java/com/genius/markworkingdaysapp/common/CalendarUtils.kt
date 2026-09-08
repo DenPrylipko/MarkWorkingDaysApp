@@ -1,7 +1,10 @@
 package com.genius.markworkingdaysapp.common
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
+import com.genius.markworkingdaysapp.R
 import com.genius.markworkingdaysapp.model.DayStatus
+import com.genius.markworkingdaysapp.model.MonthStatistics
 import com.genius.markworkingdaysapp.model.MonthStatus
 import com.genius.markworkingdaysapp.model.WorkDay
 import com.genius.markworkingdaysapp.ui.calendar.model.DayCellUiModel
@@ -13,6 +16,8 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.collections.mutableSetOf
+
+private val dayMonthFormatter = DateTimeFormatter.ofPattern("dd.MM")
 
 fun buildMonthGrid(
     yearMonth: YearMonth,
@@ -46,6 +51,7 @@ fun buildWeekdays(firstDayOfWeek: DayOfWeek): List<DayOfWeek> {
         firstDayOfWeek.plus(shift.toLong())
     }
 }
+
 
 fun buildMonthItemsForYear(
     year: Year,
@@ -85,6 +91,60 @@ fun buildMonthItemsForYear(
             status = status
         )
     }
+}
+
+fun buildCalendarShareText(
+    days: List<DayCellUiModel>,
+    currencyLabel: String,
+    statistics: MonthStatistics,
+    resources: Resources,
+): String {
+    return buildString {
+        days
+            .mapNotNull { it.workDay }
+            .forEach { workDay ->
+                if (workDay.status == DayStatus.NOT_WORKED) return@forEach
+                appendLine(
+                    formatDay(
+                        workDay = workDay,
+                        currencyLabel = currencyLabel
+                    )
+                )
+            }
+
+        appendLine()
+        appendLine(resources.getString(R.string.share_text_working_days, statistics.workedDays))
+        appendLine(resources.getString(R.string.share_text_bonuses, statistics.totalBonuses, currencyLabel))
+        append(resources.getString(R.string.share_text_total_earned, statistics.totalEarned, currencyLabel))
+    }
+}
+
+fun formatDay(
+    workDay: WorkDay,
+    currencyLabel: String
+): String = buildString {
+    append(workDay.date.format(dayMonthFormatter))
+
+    workDay.bonus?.let { bonus ->
+        append(" +")
+        append(bonus)
+        append(" ")
+        append(currencyLabel)
+    }
+
+    if (workDay.status == DayStatus.SHORT_DAY) {
+        append(" ")
+        append(workDay.earned)
+        append(" ")
+        append(currencyLabel)
+    }
+
+    workDay.note
+        ?.takeIf { it.isNotBlank() }
+        ?.let { note ->
+            append(" ")
+            append("\"$note\"")
+        }
 }
 
 fun YearMonth.getMonthTitle(

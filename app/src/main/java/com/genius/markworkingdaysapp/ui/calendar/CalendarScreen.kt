@@ -17,14 +17,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -32,6 +39,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.genius.markworkingdaysapp.AppViewModelProvider
 import com.genius.markworkingdaysapp.R
+import com.genius.markworkingdaysapp.common.buildCalendarShareText
 import com.genius.markworkingdaysapp.common.getMonthTitle
 import com.genius.markworkingdaysapp.model.DayStatus
 import com.genius.markworkingdaysapp.model.MonthStatistics
@@ -39,16 +47,21 @@ import com.genius.markworkingdaysapp.ui.calendar.daycard.DayCard
 import com.genius.markworkingdaysapp.ui.calendar.editdailyrate.EditDailyRateDialog
 import com.genius.markworkingdaysapp.ui.calendar.editday.EditDayDialog
 import com.genius.markworkingdaysapp.ui.calendar.model.DayCellUiModel
+import com.genius.markworkingdaysapp.ui.calendar.share.CalendarShareBottomSheet
 import com.genius.markworkingdaysapp.ui.common.ActionButton
 import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.MonthItemUiState
 import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.YearMonthDialog
 import com.genius.markworkingdaysapp.ui.theme.AppDimensions
 import com.genius.markworkingdaysapp.ui.theme.AppSpacing
 import com.genius.markworkingdaysapp.ui.theme.appColors
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
+import androidx.compose.ui.platform.LocalResources
+import com.genius.markworkingdaysapp.ui.calendar.share.shareImage
+import com.genius.markworkingdaysapp.ui.calendar.share.shareText
 
 const val DIALOG_FRACTION = 0.88f
 
@@ -56,6 +69,8 @@ const val DIALOG_FRACTION = 0.88f
 fun CalendarRoute(
     isEditDailyRateDialogVisible: Boolean,
     onEditDailyRateDialogDismiss: () -> Unit,
+    isCalendarShareBottomSheetVisible: Boolean,
+    onCalendarShareBottomSheetDismiss: () -> Unit,
     viewModel: CalendarViewModel = viewModel<CalendarViewModel>(
         factory = AppViewModelProvider.Factory,
     ),
@@ -67,6 +82,21 @@ fun CalendarRoute(
         mutableStateOf<DayCellUiModel?>(null)
     }
 
+    val calendarGraphicsLayer = rememberGraphicsLayer()
+
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    val resources = LocalResources.current
+
+    var calendarShareText by remember {
+        mutableStateOf("")
+    }
+
+    var calendarPreview by remember {
+        mutableStateOf<ImageBitmap?>(null)
+    }
+
     CalendarScreen(
         uiState = uiState,
         onDayClick = { day ->
@@ -74,6 +104,13 @@ fun CalendarRoute(
         },
         onDisplayedMonthClick = {
             viewModel.onYearMonthDialogOpen()
+        },
+        modifier = Modifier.drawWithContent {
+            calendarGraphicsLayer.record {
+                this@drawWithContent.drawContent()
+            }
+
+            drawLayer(calendarGraphicsLayer)
         },
     )
 
@@ -112,6 +149,8 @@ fun CalendarRoute(
 
     // EditDailyRateDialog
     if (isEditDailyRateDialogVisible) {
+
+
         EditDailyRateDialog(
             yearMonth = uiState.displayedMonthItem.yearMonth,
             incomingDailyRate = uiState.displayedMonthDailyRate,
@@ -122,6 +161,55 @@ fun CalendarRoute(
             onDismiss = onEditDailyRateDialogDismiss,
             modifier = Modifier.fillMaxWidth(DIALOG_FRACTION),
 
+        )
+    }
+
+    // CalendarShareBottomSheet
+    if (isCalendarShareBottomSheetVisible) {
+
+        LaunchedEffect(Unit) {
+             calendarShareText = buildCalendarShareText(
+                 days = uiState.days,
+                 currencyLabel = uiState.currencyLabel,
+                 statistics = uiState.monthStatistics,
+                 resources = resources,
+             )
+             calendarPreview = calendarGraphicsLayer.toImageBitmap()
+         }
+
+        CalendarShareBottomSheet(
+            calendarPreview = calendarPreview,
+            shareText = calendarShareText,
+
+            onShareImage = {
+                calendarPreview?.let { image ->
+                    coroutineScope.launch {
+                        shareImage(
+                            context = context,
+                            image = image,
+                        )
+                    }
+                }
+            },
+            onShareText = {
+                shareText(
+                    context = context,
+                    text = calendarShareText,
+                )
+            },
+            onShareImageAndText = {
+                calendarPreview?.let { image ->
+                    coroutineScope.launch {
+                        shareImage(
+                            context = context,
+                            image = image,
+                            text = calendarShareText,
+                        )
+                    }
+                }
+            },
+
+            onDismissRequest = onCalendarShareBottomSheetDismiss,
         )
     }
 

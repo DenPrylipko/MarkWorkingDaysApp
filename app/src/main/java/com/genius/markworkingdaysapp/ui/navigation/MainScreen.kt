@@ -22,6 +22,9 @@ fun MainScreen() {
     var isEditDailyRateDialogVisible by rememberSaveable {
         mutableStateOf(false)
     }
+    var isCalendarShareBottomSheetVisible by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     Scaffold(
         topBar = {
@@ -30,7 +33,9 @@ fun MainScreen() {
                 onChangeRateClick = {
                     isEditDailyRateDialogVisible = true
                 },
-                onShareClick = {},
+                onShareClick = {
+                    isCalendarShareBottomSheetVisible = true
+                },
             )
         },
     ) { innerPadding ->
@@ -46,7 +51,11 @@ fun MainScreen() {
                     isEditDailyRateDialogVisible = isEditDailyRateDialogVisible,
                     onEditDailyRateDialogDismiss = {
                         isEditDailyRateDialogVisible = false
-                    }
+                    },
+                    isCalendarShareBottomSheetVisible = isCalendarShareBottomSheetVisible,
+                    onCalendarShareBottomSheetDismiss = {
+                        isCalendarShareBottomSheetVisible = false
+                    },
                 )
                 AppScreen.STATISTICS -> {}
                 AppScreen.SETTINGS -> {}

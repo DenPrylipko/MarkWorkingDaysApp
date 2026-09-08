@@ -90,6 +90,9 @@
     <string name="share_text_label">Text</string>
     <string name="share_image_and_text_label">Image and text</string>
 
+    <string name="share_text_working_days">Working days: %1$d</string>
+    <string name="share_text_bonuses">Bonuses: %1$d %2$s</string>
+    <string name="share_text_total_earned">Total earned: %1$d %2$s</string>
 
                     <!-- Statistics -->
     <string name="statistics_title">Statistics</string>
