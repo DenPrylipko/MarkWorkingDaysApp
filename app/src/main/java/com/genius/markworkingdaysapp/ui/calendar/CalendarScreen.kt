@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -48,7 +49,6 @@ import com.genius.markworkingdaysapp.ui.calendar.editdailyrate.EditDailyRateDial
 import com.genius.markworkingdaysapp.ui.calendar.editday.EditDayDialog
 import com.genius.markworkingdaysapp.ui.calendar.model.DayCellUiModel
 import com.genius.markworkingdaysapp.ui.calendar.share.CalendarShareBottomSheet
-import com.genius.markworkingdaysapp.ui.common.ActionButton
 import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.MonthItemUiState
 import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.YearMonthDialog
 import com.genius.markworkingdaysapp.ui.theme.AppDimensions
@@ -62,6 +62,7 @@ import java.time.format.TextStyle
 import androidx.compose.ui.platform.LocalResources
 import com.genius.markworkingdaysapp.ui.calendar.share.shareImage
 import com.genius.markworkingdaysapp.ui.calendar.share.shareText
+import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.getStyle
 
 const val DIALOG_FRACTION = 0.88f
 
@@ -277,16 +278,14 @@ private fun MonthCalendar(
     onMonthClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val monthHeader = displayedMonthItem.yearMonth.getMonthTitle(withYear = true)
-
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(AppSpacing.space18)
     ) {
 
-        ActionButton(
-            label = monthHeader,
+        MonthHeader(
+            monthItem = displayedMonthItem,
             onClick = onMonthClick,
         )
 
@@ -313,6 +312,36 @@ private fun MonthCalendar(
             }
         }
     }
+}
+
+@Composable
+private fun MonthHeader(
+    monthItem: MonthItemUiState,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val style = monthItem.status.getStyle()
+    val label = monthItem.yearMonth.getMonthTitle(withYear = true)
+
+    Surface(
+        modifier = modifier,
+        onClick = onClick,
+        shape = CircleShape,
+        color = style.containerColor,
+        contentColor = style.contentColor,
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(
+                horizontal = AppSpacing.space24,
+                vertical = AppSpacing.space12
+            ),
+        )
+    }
+
+
 }
 
 @Composable
