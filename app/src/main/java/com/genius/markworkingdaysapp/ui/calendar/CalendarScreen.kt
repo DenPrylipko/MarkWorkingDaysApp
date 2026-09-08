@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -49,8 +50,11 @@ import com.genius.markworkingdaysapp.ui.calendar.editdailyrate.EditDailyRateDial
 import com.genius.markworkingdaysapp.ui.calendar.editday.EditDayDialog
 import com.genius.markworkingdaysapp.ui.calendar.model.DayCellUiModel
 import com.genius.markworkingdaysapp.ui.calendar.share.CalendarShareBottomSheet
+import com.genius.markworkingdaysapp.ui.calendar.share.shareImage
+import com.genius.markworkingdaysapp.ui.calendar.share.shareText
 import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.MonthItemUiState
 import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.YearMonthDialog
+import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.getStyle
 import com.genius.markworkingdaysapp.ui.theme.AppDimensions
 import com.genius.markworkingdaysapp.ui.theme.AppSpacing
 import com.genius.markworkingdaysapp.ui.theme.appColors
@@ -59,10 +63,6 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
-import androidx.compose.ui.platform.LocalResources
-import com.genius.markworkingdaysapp.ui.calendar.share.shareImage
-import com.genius.markworkingdaysapp.ui.calendar.share.shareText
-import com.genius.markworkingdaysapp.ui.common.yearmonthdialog.getStyle
 
 const val DIALOG_FRACTION = 0.88f
 
@@ -162,21 +162,21 @@ fun CalendarRoute(
             onDismiss = onEditDailyRateDialogDismiss,
             modifier = Modifier.fillMaxWidth(DIALOG_FRACTION),
 
-        )
+            )
     }
 
     // CalendarShareBottomSheet
     if (isCalendarShareBottomSheetVisible) {
 
         LaunchedEffect(Unit) {
-             calendarShareText = buildCalendarShareText(
-                 days = uiState.days,
-                 currencyLabel = uiState.currencyLabel,
-                 statistics = uiState.monthStatistics,
-                 resources = resources,
-             )
-             calendarPreview = calendarGraphicsLayer.toImageBitmap()
-         }
+            calendarShareText = buildCalendarShareText(
+                days = uiState.days,
+                currencyLabel = uiState.currencyLabel,
+                statistics = uiState.monthStatistics,
+                resources = resources,
+            )
+            calendarPreview = calendarGraphicsLayer.toImageBitmap()
+        }
 
         CalendarShareBottomSheet(
             calendarPreview = calendarPreview,
@@ -263,7 +263,10 @@ fun CalendarScreen(
                 )
             }
 
-            MonthStatistics(statistics = uiState.monthStatistics)
+            MonthStatistics(
+                statistics = uiState.monthStatistics,
+                currencyLabel = uiState.currencyLabel,
+            )
         }
     }
 
@@ -496,6 +499,7 @@ private fun DayCell(
 @Composable
 private fun MonthStatistics(
     statistics: MonthStatistics,
+    currencyLabel: String,
     modifier: Modifier = Modifier,
 ) {
 
@@ -511,11 +515,13 @@ private fun MonthStatistics(
             value = statistics.totalBonuses,
             label = stringResource(R.string.month_statistics_bonuses),
             modifier = Modifier.weight(1f),
+            currencyLabel = currencyLabel,
         )
         MonthStatisticsElement(
             value = statistics.totalEarned,
             label = stringResource(R.string.month_statistics_total_earned),
             modifier = Modifier.weight(1f),
+            currencyLabel = currencyLabel,
         )
     }
 }
@@ -525,6 +531,7 @@ private fun MonthStatisticsElement(
     value: Int,
     label: String,
     modifier: Modifier = Modifier,
+    currencyLabel: String? = null,
 ) {
     Column(
         modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
@@ -534,11 +541,14 @@ private fun MonthStatisticsElement(
             color = MaterialTheme.colorScheme.surfaceVariant,
         ) {
             Text(
-                text = value.toString(), modifier = Modifier.padding(
+                text = "$value ${currencyLabel ?: ""}",
+                modifier = Modifier.padding(
                     horizontal = AppSpacing.space12,
                     vertical = AppSpacing.space6,
-                ), style = MaterialTheme.typography.bodyLarge
+                ),
+                style = MaterialTheme.typography.bodyLarge
             )
+
         }
 
         Text(
