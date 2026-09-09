@@ -106,13 +106,16 @@ fun CalendarRoute(
         onDisplayedMonthClick = {
             viewModel.onYearMonthDialogOpen()
         },
-        modifier = Modifier.drawWithContent {
-            calendarGraphicsLayer.record {
-                this@drawWithContent.drawContent()
-            }
+        modifier = Modifier
+            .padding(horizontal = AppSpacing.space12)
+            .drawWithContent {
+                calendarGraphicsLayer.record {
+                    this@drawWithContent.drawContent()
+                }
 
-            drawLayer(calendarGraphicsLayer)
-        },
+                drawLayer(calendarGraphicsLayer)
+            },
+
     )
 
     // EditDayDialog
@@ -235,8 +238,7 @@ fun CalendarScreen(
 
     Surface(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppSpacing.space12),
+            .fillMaxWidth(),
         color = MaterialTheme.colorScheme.surface,
         shape = MaterialTheme.shapes.large
     ) {

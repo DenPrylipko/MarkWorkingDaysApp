@@ -206,7 +206,7 @@ private fun ShareOption(
                     .fillMaxWidth()
                     .weight(1f),
                 shape = MaterialTheme.shapes.small,
-                color = MaterialTheme.colorScheme.surface,
+                color = MaterialTheme.colorScheme.background,
                 contentColor = MaterialTheme.colorScheme.onSurface,
             ) {
                 Box(
