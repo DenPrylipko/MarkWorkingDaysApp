@@ -4,8 +4,7 @@
     tools:ignore="MissingTranslation">
 
     <string name="app_name">Mark Working Days</string>
-                    <!-- .......... v 2.0 .......... -->
-    <string name="version_format" translatable="false">v%1$s</string>
+    <string name="version_format" translatable="false">Version %1$s</string>
 
 
     <!-- status -->

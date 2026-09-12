@@ -36,6 +36,7 @@ import com.genius.markworkingdaysapp.ui.theme.AppSpacing
 @Composable
 fun AppTopBar(
     selectedScreen: AppScreen,
+    onNavigationDrawerButtonClick: () -> Unit,
     onChangeRateClick: () -> Unit,
     onShareClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -58,7 +59,7 @@ fun AppTopBar(
         PrimaryIconButton(
             icon = painterResource(R.drawable.ic_menu),
             contentDescription = stringResource(R.string.button_navigation_menu_content_description),
-            onClick = {},
+            onClick = onNavigationDrawerButtonClick,
             modifier = Modifier.align(Alignment.CenterStart)
         )
 

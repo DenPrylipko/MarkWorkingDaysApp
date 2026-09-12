@@ -10,4 +10,5 @@ internal object AppSpacing {
     val space18 = 18.dp
     val space24 = 24.dp
     val space36 = 36.dp
+    val space48 = 48.dp
 }
