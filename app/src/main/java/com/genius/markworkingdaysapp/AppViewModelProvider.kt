@@ -21,7 +21,8 @@ object AppViewModelProvider {
 
         initializer {
             StatisticsViewModel(
-                settingsRepository = application().settingsRepository
+                settingsRepository = application().settingsRepository,
+                workDayRepository = application().workDayRepository,
             )
         }
 
